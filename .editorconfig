@@ -24,7 +24,7 @@ insert_final_newline = true
 
 
 
-[*.{go,py,rb,php}]
+[*.{go,py,rb,php,js}]
 
 indent_size = 4
 
