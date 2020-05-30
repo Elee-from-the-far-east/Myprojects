@@ -106,5 +106,8 @@ for (let i = 0; i <commentText.length ; i++) {
     commentText[i].textContent = photoData[0].comments[i];
 }
 
-
+const socialCommentblock = document.querySelector('.social__comment-count');
+const uploadSocialButton = document.querySelector('.comments-loader');
+socialCommentblock.classList.add('visually-hidden');
+uploadSocialButton.classList.add('visually-hidden');
 
