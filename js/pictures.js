@@ -344,14 +344,36 @@ hashTag.addEventListener('change', function (evt) {
         let arr = str.match(regExp);
         let isTrue = (regExp, str) => regExp.test(str);
 
-        check(/(#(?!\w))|((?<=\s)#(?!\w))/.test(str));
-        if (isTrue(/(#(?!\w))/, str)) {
+        check(/(?<!#)(\b\w{1,19}\b ?){1,5}/.exec(str));
+
+        if (isTrue(/(?<!\w)#(?!\w)/, str)) {
             hashTag.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
             hashTag.reportValidity();
 
+        } else if (isTrue(/((?<!#)(\b\w{1,19}\b ?){1,5})/, str)) {
+            hashTag.setCustomValidity('Хеш-тег начинается c решетшки');
+            hashTag.reportValidity();
+
+
+        } else if (isTrue(/(#\w{1,19}#\w*){1,5}/, str)) {
+            hashTag.setCustomValidity('Хэш-теги разделяются пробелами');
+            hashTag.reportValidity();
+
+        } else if (isTrue(/((?<=\s)#(?!\w))/, str)) {
+            console.log('ssd');
+            hashTag.setCustomValidity('Хеш-тег не может состоять только из одной решётки;');
+            hashTag.reportValidity();
+
+        } else if (isTrue(/(#\w{1,19} ?){6}/, str)) {
+            hashTag.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+            hashTag.reportValidity();
+
+        } else {
+            hashTag.setCustomValidity('');
+            hashTag.reportValidity();
         }
 
-
+        document.addEventListener('keydown', escPressHandler, {once: true});
         if (arr) {
             let result = arr[0].toLowerCase().split(' ');
             for (let item of result) {
@@ -362,34 +384,36 @@ hashTag.addEventListener('change', function (evt) {
                 if (similiar > 1) {
                     hashTag.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
                     hashTag.reportValidity();
-
-                } else if (isTrue(/(#\w{1,19}#){1,5}/, str)) {
-                    hashTag.setCustomValidity('Хэш-теги разделяются пробелами');
-                    hashTag.reportValidity();
-
-                } else if (isTrue(/((?<=\s)#(?!\w))/, str)) {
-                    console.log('ssd');
-                    hashTag.setCustomValidity('Хеш-тег не может состоять только из одной решётки;');
-                    hashTag.reportValidity();
-
-                } else if (item.length > 19) {
-                    hashTag.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
-                    hashTag.reportValidity();
-
-                } else if (isTrue(/((?<!#)\w{1,19} ?){1,5}/, str)) {
-                    hashTag.setCustomValidity('Хеш-тег начинается решетшки');
-                    hashTag.reportValidity();
-                } else if (result.length > 5) {
-                    hashTag.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
-                    hashTag.reportValidity();
-
-                } else {
-                    hashTag.setCustomValidity('');
-                    hashTag.reportValidity();
                 }
             }
         }
-        document.addEventListener('keydown', escPressHandler, {once: true});
+        //
+        //         } else if (isTrue(/(#\w{1,19}#){1,5}/, str)) {
+        //             hashTag.setCustomValidity('Хэш-теги разделяются пробелами');
+        //             hashTag.reportValidity();
+        //
+        //         } else if (isTrue(/((?<=\s)#(?!\w))/, str)) {
+        //             hashTag.setCustomValidity('Хеш-тег не может состоять только из одной решётки;');
+        //             hashTag.reportValidity();
+        //
+        //         } else if (item.length > 19) {
+        //             hashTag.setCustomValidity('Максимальная длина одного хэш-тега 20 символов, включая решётку');
+        //             hashTag.reportValidity();
+        //
+        //         } else if (isTrue(/((?<!#)(\b\w{1,19}\b ?){1,5})/, str)) {
+        //             hashTag.setCustomValidity('Хеш-тег начинается c решетшки');
+        //             hashTag.reportValidity();
+        //         } else if (result.length > 5) {
+        //             hashTag.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+        //             hashTag.reportValidity();
+        //
+        //         } else {
+        //             hashTag.setCustomValidity('');
+        //             hashTag.reportValidity();
+        //         }
+        //     }
+        // }
+        // document.addEventListener('keydown', escPressHandler, {once: true});
     }
 );
 
