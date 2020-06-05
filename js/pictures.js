@@ -332,88 +332,85 @@ pin.addEventListener('mousedown', function (event) {
 
 });
 
-function validate() {
+const hashTagValidateHandler = (element) => {
 
-}
+    let regExp = /(#[^#\s]{1,19})/g;
+    let str = element.value;
+    let arr = str.match(regExp);
+    let isTrue = (regExp, str) => regExp.test(str);
+    check(arr);
+
+    if (isTrue(/(?<!\w)#(?!\w)/, str)) {
+        element.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
+        element.reportValidity();
+        element.style.outline = '3px solid red';
+
+
+    } else if (isTrue(/[^#\w\s]{1,}(?=.*)|((?<!#)(\b\w{1,19}\b ?){1,5})/, str)) {
+        element.setCustomValidity('Хеш-тег начинается c решетшки');
+        element.reportValidity();
+        element.style.outline = '3px solid red';
+
+    } else if (isTrue(/(#\w{1,19}#\w*){1,5}/, str)) {
+        element.setCustomValidity('Хэш-теги разделяются пробелами');
+        element.reportValidity();
+        element.style.outline = '3px solid red';
+    } else if (isTrue(/((?<=\s)#(?!\w))/, str)) {
+        console.log('ssd');
+        element.setCustomValidity('Хеш-тег не может состоять только из одной решётки;');
+        element.reportValidity();
+        element.style.outline = '3px solid red';
+    } else if (isTrue(/(#[^#\s]{1,19} ?){6,}/, str)) {
+        element.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
+        element.reportValidity();
+        element.style.outline = '3px solid red';
+    } else if (isTrue(/(#[^#\s]{20,} ?)/, str)) {
+        element.setCustomValidity('Максимальная длина одного хэш-тега может быть 20 символов, включая решётку');
+        element.reportValidity();
+        element.style.outline = '3px solid red';
+    } else {
+        element.setCustomValidity('');
+        element.reportValidity();
+        element.style.outline = '';
+    }
+    if (arr) {
+        let result = arr.toString().toLowerCase().split(',');
+        check(result);
+        for (let item of result) {
+            let similiar = 0;
+            for (let i = 0; i < result.length; i++) {
+                if (item === result[i]) {
+                    similiar++;
+                }
+            }
+
+            if (similiar > 1) {
+                element.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+                element.reportValidity();
+                element.style.outline = '3px solid red';
+            }
+        }
+    }
+
+
+};
 
 
 const hashTag = uploadSection.querySelector('.text__hashtags');
-hashTag.addEventListener('change', function (evt) {
-    console.time('start');
-        let regExp = /(#\w{1,19} ?){1,5}/;
-        let str = hashTag.value;
-        let arr = str.match(regExp);
-        let isTrue = (regExp, str) => regExp.test(str);
+const submitButton = uploadSection.querySelector('.img-upload__submit');
+
+submitButton.onclick = function () {
+    hashTagValidateHandler(hashTag);
+    document.addEventListener('keydown', escPressHandler, {once: true});
+};
 
 
-        //
-        // check(str.match(/(#\w{1,19} ?)/g));
 
-        if (isTrue(/(?<!\w)#(?!\w)/, str)) {
-            hashTag.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
-            hashTag.reportValidity();
-
-
-        } else if (isTrue(/(([^#\w]{1,})(?=.*))|((?<!#)(\b\w{1,19}\b ?){1,5})/, str)) {
-            hashTag.setCustomValidity('Хеш-тег начинается c решетшки');
-            hashTag.reportValidity();
-
-
-        } else if (isTrue(/(#\w{1,19}#\w*){1,5}/, str)) {
-            hashTag.setCustomValidity('Хэш-теги разделяются пробелами');
-            hashTag.reportValidity();
-
-        } else if (isTrue(/((?<=\s)#(?!\w))/, str)) {
-            console.log('ssd');
-            hashTag.setCustomValidity('Хеш-тег не может состоять только из одной решётки;');
-            hashTag.reportValidity();
-
-        } else if (isTrue(/(#\w{1,19} ?){6}/, str)) {
-            hashTag.setCustomValidity('Нельзя указать больше пяти хэш-тегов');
-            hashTag.reportValidity();
-
-        } else {
-            hashTag.setCustomValidity('');
-            hashTag.reportValidity();
-        }
-
-        document.addEventListener('keydown', escPressHandler, {once: true});
-        if (arr) {
-            let result = arr[0].toLowerCase().split(' ');
-            for (let item of result) {
-                let similiar = 0;
-                for (let i = 0; i < result.length; i++) {
-                    if (item === result[i]) similiar++;
-                }
-                if (similiar > 1) {
-                    hashTag.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
-                    hashTag.reportValidity();
-                }
-            }
-        }
-
-        console.timeEnd('start')
-
-    }
-);
+// hashTag.addEventListener('change', function (evt) {
+//         hashTagValidateHandler(hashTag);
+//
+//     }
+// );
 
 
 openElement(editForm);
-
-
-// if (isTrue(/#(?!\w)/, str)) {
-//     console.log('ssd');
-//     hashTag.setCustomValidity('Хэш-тег начинается с символа # (решётка);');
-//     hashTag.reportValidity();
-// }
-// if (isTrue(/(?<=\s)#(?!\w)/, str)) {
-//     console.log('ПРивет');
-//     hashTag.setCustomValidity('Хэш-тег начинается с символа # (решётка);');
-//     hashTag.reportValidity();
-// }
-//
-// if (isTrue(/#(?!\w)/, str) || isTrue(/(?<=\s)#(?!\w)/, str)) {
-//     console.log('ssd');
-//     hashTag.setCustomValidity('Хэш-тег начинается с символа # (решётка);');
-//     hashTag.reportValidity();
-// }
