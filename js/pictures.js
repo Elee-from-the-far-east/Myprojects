@@ -98,6 +98,7 @@ renderPictureElements(photoData);
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
+const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel')
 const likesCount = bigPicture.querySelector('.likes-count');
 const photoDiscrition = bigPicture.querySelector('.social__caption');
 const commentList = bigPicture.querySelector('.social__comments');
@@ -115,6 +116,16 @@ const socialCommentblock = document.querySelector('.social__comment-count');
 const uploadSocialButton = document.querySelector('.comments-loader');
 socialCommentblock.classList.add('visually-hidden');
 uploadSocialButton.classList.add('visually-hidden');
+
+bigPictureCloseButton.addEventListener('click', function () {
+  closeElement(bigPicture)
+})
+
+
+
+
+
+
 
 
 //____________________________________//
@@ -220,16 +231,15 @@ closeElement(effectElement);
 const resetToDefault = () => {
     if (clickedClass) previewPhoto.classList.remove(clickedClass);
     if (currentFilter) previewPhoto.style.filter = '';
-    pin.style.filter = '';
-    effectDepth.style.width = '100%';
-    pin.style.left = '100%';
-    previewPhoto.style.transform = 'scale(1)';
-    scaleControlInput.value = '100%';
-    effectValue.value = 100;
     if (clickedNode && clickedNode.value !== 'none') {
         effectElement.classList.remove('hidden');
     }
-
+    pin.style.filter = '';
+    pin.style.left = '100%';
+    effectDepth.style.width = '100%';
+    effectValue.value = 100;
+    previewPhoto.style.transform = 'scale(1)';
+    scaleControlInput.value = '100%';
 };
 
 const effectChangeHandler = (evt) => {
@@ -265,9 +275,6 @@ effectsBlock.addEventListener('change', effectChangeHandler);
 //        clicked = radioButton.dataset.filter;
 //     });
 // }
-
-
-// openElement(editForm);
 
 
 pin.addEventListener('mousedown', function (event) {
@@ -332,13 +339,19 @@ pin.addEventListener('mousedown', function (event) {
 
 });
 
+const addEscListenerOnInput = (element) => {
+    element.addEventListener('change', function (evt) {
+        document.addEventListener('keydown', escPressHandler, {once: true});
+    })
+
+};
+
 const hashTagValidateHandler = (element) => {
 
     let regExp = /(#[^#\s]{1,19})/g;
     let str = element.value;
     let arr = str.match(regExp);
     let isTrue = (regExp, str) => regExp.test(str);
-    check(arr);
 
     if (isTrue(/(?<!\w)#(?!\w)/, str)) {
         element.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
@@ -395,22 +408,26 @@ const hashTagValidateHandler = (element) => {
 
 };
 
+const textAreaValidateHandler = (element) => {
+    if (element.validity.tooLong) {
+        element.setCustomValidity('длина комментария не может составлять больше 140 символов');
+        element.style.outline = '3px solid red';
+    } else {
+        element.setCustomValidity('');
+        element.style.outline = '';
+    }
+
+};
+
 
 const hashTag = uploadSection.querySelector('.text__hashtags');
+const textArea = uploadSection.querySelector('.text__description');
 const submitButton = uploadSection.querySelector('.img-upload__submit');
 
 submitButton.onclick = function () {
     hashTagValidateHandler(hashTag);
-    document.addEventListener('keydown', escPressHandler, {once: true});
+    textAreaValidateHandler(textArea);
 };
 
 
-
-// hashTag.addEventListener('change', function (evt) {
-//         hashTagValidateHandler(hashTag);
-//
-//     }
-// );
-
-
-openElement(editForm);
+addEscListenerOnInput(hashTag), addEscListenerOnInput(textArea);
