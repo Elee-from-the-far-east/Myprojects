@@ -234,7 +234,6 @@ const resetToDefault = () => {
     if (clickedNode && clickedNode.value !== 'none') {
         effectElement.classList.remove('hidden');
     }
-    pin.style.filter = '';
     pin.style.left = '100%';
     effectDepth.style.width = '100%';
     effectValue.value = 100;
@@ -242,13 +241,14 @@ const resetToDefault = () => {
     scaleControlInput.value = '100%';
 };
 
+
+
 const effectChangeHandler = (evt) => {
     clickedNode = evt.target;
-    resetToDefault();
-    clickedClass = `effects__preview--${evt.target.value}`;
     currentFilter = clickedNode.dataset.filter;
+    clickedClass = `effects__preview--${evt.target.value}`;
     previewPhoto.classList.add(`effects__preview--${evt.target.value}`);
-
+    resetToDefault();
 };
 
 
