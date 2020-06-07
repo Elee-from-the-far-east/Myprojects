@@ -2,7 +2,7 @@
 
 import * as utils from './utils.js'
 
-
+//----Дом элементы----//
 const uploadSocialButton = document.querySelector('.comments-loader');
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
@@ -19,16 +19,17 @@ const pictureTemplate = document.querySelector('#picture')
     .querySelector('.picture');
 
 
-
-function showBigPicture(data) {
+//----Навешивает данные на полноэкранное изображение----//
+function renderDataToBigPicture(data) {
     bigPictureImg.src = data.url;
     likesCount.textContent = data.likes;
     photoDiscrition.textContent = data.description;
     for (let i = 0; i < commentText.length; i++) {
-        commentText[i].textContent = data.comments[i];
+        commentText[i].textContent = data.comments[utils.getRandomInt(data.comments.length)].message;
     }
 }
 
+//----Создает дом элемент с заданными даннами из data----//
 function makePictureElement(data) {
     let newElement = pictureTemplate.cloneNode(true);
     newElement.querySelector('.picture__img').src = data.url;
@@ -36,13 +37,15 @@ function makePictureElement(data) {
     newElement.querySelector('.picture__comments').textContent = data.comments;
     newElement.addEventListener('click', function (evt) {
         utils.openElement(bigPicture);
-        showBigPicture(data);
+        renderDataToBigPicture(data);
+        bigPicture.classList.remove('hidden')
     });
     return newElement;
 };
 
-
+//----Рендерит элементы на страницу с данными из массива data с мапами----//
 function renderPictureElements(data) {
+
     let fragment = document.createDocumentFragment();
     for (let item of data) {
         fragment.appendChild(makePictureElement(item));
@@ -50,20 +53,18 @@ function renderPictureElements(data) {
     picturesContainer.appendChild(fragment);
 }
 
-
-
-// // Не понятно 5 из восьми комментариев
-// commentsCount.textContent = photoData.comments.length;
+//----Вешаем обработчик закрытия полноэкранного изображения----//
+bigPictureCloseButton.addEventListener('click', function () {
+    utils.closeElement(bigPicture)
+})
 
 
 socialAvatar.src = `img/avatar-${Math.ceil(Math.random() * 6)}.svg`;
 socialCommentblock.classList.add('visually-hidden');
 uploadSocialButton.classList.add('visually-hidden');
+// // Не понятно 5 из восьми комментариев
+// commentsCount.textContent = photoData.comments.length;
 
-
-bigPictureCloseButton.addEventListener('click', function () {
-  utils.closeElement(bigPicture)
-})
 
 
 
