@@ -20,9 +20,6 @@ function getRandomInt(max) {
 const escPressHandler = (evt) => {
     if (isEscPressed(evt)) {
         closeElement(elementToClose);
-        resetToDefault()
-        form.reset();
-        deleteBlobImage();
 
     }
 };
@@ -36,6 +33,11 @@ const openElement = (element) => {
 const closeElement = (element) => {
     element.classList.add('hidden');
     document.removeEventListener('keydown', escPressHandler);
+    document.body.classList.remove('modal-open')
+    resetToDefault()
+    form.reset();
+    deleteBlobImage();
+
 };
 
 

@@ -1,5 +1,6 @@
 'use strict';
 
+import {ajaxPostRequest} from './backend.js';
 import * as utils from './utils.js';
 
 //----Дом элементы----//
@@ -25,16 +26,26 @@ const pinLevelLine = document.querySelector('.effect-level__line');
 const pin = uploadSection.querySelector('.effect-level__pin');
 const hashTag = uploadSection.querySelector('.text__hashtags');
 
-//----Переменные----//
+//----Переменные для обработчиков событий----//
 let clickedClass;
 let clickedNode;
 let currentFilter;
 let filterCallback;
 
-//----Значение по умолчанию----//
-effectValue.value = 100;
-scaleControlInput.value = '100%';
-utils.closeElement(effectElement);
+const resetToDefault = () => {
+    if (clickedClass) previewPhoto.classList.remove(clickedClass);
+    if (currentFilter) previewPhoto.style.filter = '';
+    if (clickedNode && clickedNode.value !== 'none') {
+        effectElement.classList.remove('hidden');
+    }
+    pin.style.left = '100%';
+    effectDepth.style.width = '100%';
+    effectValue.value = 100;
+    previewPhoto.style.transform = 'scale(1)';
+    scaleControlInput.value = '100%';
+    hashTag.style.outline = '';
+};
+
 
 //----Обработчик нажатия на +----//
 const scaleMinusClickHandler = () => {
@@ -72,19 +83,7 @@ const effectChangeHandler = (evt) => {
 };
 
 //----Сброс значений по умолчанию----//
-const resetToDefault = () => {
-    if (clickedClass) previewPhoto.classList.remove(clickedClass);
-    if (currentFilter) previewPhoto.style.filter = '';
-    if (clickedNode && clickedNode.value !== 'none') {
-        effectElement.classList.remove('hidden');
-    }
-    pin.style.left = '100%';
-    effectDepth.style.width = '100%';
-    effectValue.value = 100;
-    previewPhoto.style.transform = 'scale(1)';
-    scaleControlInput.value = '100%';
-    hashTag.style.outline = '';
-};
+
 
 const applySepia = (index) => {
     let cssIndex = index / pinLevelLine.offsetWidth;
@@ -188,13 +187,24 @@ uploadButton.addEventListener('change', function() {
 });
 editFormCloseButton.addEventListener('click', function() {
     utils.closeElement(editForm);
-    resetToDefault();
-    deleteBlobImage();
+
 });
 
 pin.addEventListener('mousedown', function(event) {
     pinMouseDownHandler(event, filterCallback);
 
 });
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    ajaxPostRequest(new FormData(form), function() {
+        utils.closeElement(editForm);
+    });
+});
+
+//----Значения по умолчанию----//
+effectValue.value = 100;
+scaleControlInput.value = '100%';
+utils.closeElement(effectElement);
+
 
 export {resetToDefault};
