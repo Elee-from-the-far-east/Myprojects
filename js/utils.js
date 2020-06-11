@@ -1,7 +1,7 @@
 "use strict";
 
 import {resetToDefault, form, deleteBlobImage} from './picture-effects.js'
-
+import {data} from './data.js'
 
 const enterEventCode = 'Enter';
 const escEventCode = 'Escape';
@@ -20,7 +20,7 @@ function getRandomInt(max) {
 const escPressHandler = (evt) => {
     if (isEscPressed(evt)) {
         closeElement(elementToClose);
-
+        deleteBlobImage();
     }
 };
 
@@ -36,13 +36,15 @@ const closeElement = (element) => {
     document.body.classList.remove('modal-open')
     resetToDefault()
     form.reset();
-    deleteBlobImage();
-
 };
 
+ function classToggler(arrToclear, element) {
+    arrToclear.forEach(item => item.classList.remove('img-filters__button--active'));
+    element.classList.add('img-filters__button--active');
+}
 
 
-export {
+export {classToggler,
     openElement,
     closeElement,
     check,

@@ -26,89 +26,107 @@ const pinLevelLine = document.querySelector('.effect-level__line');
 const pin = uploadSection.querySelector('.effect-level__pin');
 const hashTag = uploadSection.querySelector('.text__hashtags');
 
+const effectValueToClassName = {
+    chrome: `effects__preview--chrome`,
+    sepia: `effects__preview--sepia`,
+    marvin: `effects__preview--marvin`,
+    phobos: `effects__preview--phobos`,
+    heat: `effects__preview--heat`,
+};
+
+const effectValueToFilterName = {
+    chrome: `grayscale`,
+    sepia: `sepia`,
+    marvin: `invert`,
+    phobos: `blur`,
+    heat: `brightness`,
+};
+
+const effectValueTofilterCallback = {
+    chrome: (index) => {
+        let cssIndex = index / pinLevelLine.offsetWidth;
+        previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
+    },
+    sepia: (index) => {
+        let cssIndex = index / pinLevelLine.offsetWidth;
+        previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
+    },
+    marvin: (index) => {
+        let cssIndex = index / pinLevelLine.offsetWidth * 100 + '%';
+        previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
+    },
+    phobos: (index) => {
+        let cssIndex = index * 3 / pinLevelLine.offsetWidth + 'px';
+        previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
+
+    },
+    heat: (index) => {
+        let cssIndex = 1 + (2 * index / pinLevelLine.offsetWidth);
+        previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
+    },
+
+};
+
+const transformToCallback = {
+    scale: (index) => {
+        let cssIndex = parseInt(index) / 100;
+        previewPhoto.style.transform = `scale(${cssIndex})`;
+    },
+};
+
 //----Переменные для обработчиков событий----//
 let clickedClass;
 let clickedNode;
 let currentFilter;
 let filterCallback;
 
+//----Сброс значений по умолчанию----//
 const resetToDefault = () => {
     if (clickedClass) previewPhoto.classList.remove(clickedClass);
-    if (currentFilter) previewPhoto.style.filter = '';
     if (clickedNode && clickedNode.value !== 'none') {
         effectElement.classList.remove('hidden');
+        effectValue.value = 100;
+    } else {
+        effectElement.classList.add('hidden');
+        effectValue.value = 0;
     }
     pin.style.left = '100%';
     effectDepth.style.width = '100%';
-    effectValue.value = 100;
+    previewPhoto.style.filter = '';
     previewPhoto.style.transform = 'scale(1)';
     scaleControlInput.value = '100%';
     hashTag.style.outline = '';
 };
 
-
 //----Обработчик нажатия на +----//
-const scaleMinusClickHandler = () => {
+const scaleMinusClickHandler = (callback) => {
     let scaleStep = 25;
     let scaleValue = parseInt(scaleControlInput.value);
     if (scaleValue > scaleStep) scaleControlInput.value = (scaleValue -
         scaleStep) + '%';
-    let cssScaleIndex = parseInt(scaleControlInput.value) / 100;
-    previewPhoto.style.transform = `scale(${cssScaleIndex})`;
+    callback(scaleControlInput.value);
 
 };
 
 //----Обработчик нажатия на - ----//
-const scalePlusClickHandler = () => {
+const scalePlusClickHandler = (callback) => {
     let scaleStep = 25;
     let maxScale = 100;
     let scaleValue = parseInt(scaleControlInput.value);
     if (scaleValue < maxScale) scaleControlInput.value = (scaleValue +
         scaleStep) + '%';
-    let cssScaleIndex = parseInt(scaleControlInput.value) / 100;
-    previewPhoto.style.transform = `scale(${cssScaleIndex})`;
+    callback(scaleControlInput.value);
+
 };
 
 //----Обработчик смены фильтра----//
 const effectChangeHandler = (evt) => {
     clickedNode = evt.target;
     resetToDefault();
-    currentFilter = clickedNode.dataset.filter;
-    if (currentFilter) {
-        filterCallback = eval(`apply${clickedNode.dataset.filter.split(
-            '')[0].toUpperCase()}${clickedNode.dataset.filter.slice(1)}`);
-    }
-    clickedClass = `effects__preview--${evt.target.value}`;
-    previewPhoto.classList.add(`effects__preview--${evt.target.value}`);
-};
-
-//----Сброс значений по умолчанию----//
-
-
-const applySepia = (index) => {
-    let cssIndex = index / pinLevelLine.offsetWidth;
-    previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
-};
-
-const applyGrayscale = (index) => {
-    let cssIndex = index / pinLevelLine.offsetWidth;
-    previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
-};
-
-const applyInvert = (index) => {
-    let cssIndex = index / pinLevelLine.offsetWidth * 100 + '%';
-    previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
-};
-
-const applyBlur = (index) => {
-    let cssIndex = index * 3 / pinLevelLine.offsetWidth + 'px';
-    previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
-
-};
-
-const applyBrightness = (index) => {
-    let cssIndex = 1 + (2 * index / pinLevelLine.offsetWidth);
-    previewPhoto.style.filter = `${currentFilter}(${cssIndex})`;
+    currentFilter = effectValueToFilterName[evt.target.value];
+    filterCallback = effectValueTofilterCallback[evt.target.value];
+    clickedClass = effectValueToClassName[evt.target.value];
+    if (clickedClass) previewPhoto.classList.add(clickedClass);
 };
 
 //----Обработчик Драг анд Дроп на ползунке смены уровня эффекта----//
@@ -134,8 +152,7 @@ const pinMouseDownHandler = (event, callback) => {
         effectDepth.style.width = newLeft + 'px';
         let inputValueOfEfLevel = newLeft / pinLevelLine.offsetWidth * 100;
         effectValue.value = Math.round(inputValueOfEfLevel);
-
-        callback(newLeft);
+        if (callback) callback(newLeft);
 
     };
 
@@ -175,18 +192,22 @@ export const deleteBlobImage = () => {
 };
 
 //----Навешиваем обработчики выбора фильта, глубины эффекта, открытия и закрытия формы редактирования----//
-scaleControlPlus.addEventListener('click', scalePlusClickHandler);
-scaleControlMinus.addEventListener('click', scaleMinusClickHandler);
-effectsBlock.addEventListener('change', effectChangeHandler);
-checkedRadio.addEventListener('click', function() {
-    utils.closeElement(effectElement);
+scaleControlPlus.addEventListener('click', function() {
+    scalePlusClickHandler(transformToCallback.scale);
 });
+scaleControlMinus.addEventListener('click', function() {;
+    scaleMinusClickHandler(transformToCallback.scale);
+
+});
+effectsBlock.addEventListener('change', effectChangeHandler);
+
 uploadButton.addEventListener('change', function() {
     utils.openElement(editForm);
     showBlobImg();
 });
 editFormCloseButton.addEventListener('click', function() {
     utils.closeElement(editForm);
+    deleteBlobImage();
 
 });
 
@@ -202,9 +223,8 @@ form.addEventListener('submit', function(e) {
 });
 
 //----Значения по умолчанию----//
-effectValue.value = 100;
-scaleControlInput.value = '100%';
+effectValue.setAttribute('value', 0);
+scaleControlInput.setAttribute('value', '100');
 utils.closeElement(effectElement);
-
 
 export {resetToDefault};

@@ -3,8 +3,8 @@
 import * as utils from './utils.js';
 import {resetToDefault} from './picture-effects.js'
 
-const XHR_STATUS = {
-    ok: 200,
+const xhrStatus = {
+    OK: 200,
 };
 
 export function ajaxGetRequest(onSuccessCb, onError = errorHandler) {
@@ -16,7 +16,7 @@ export function ajaxGetRequest(onSuccessCb, onError = errorHandler) {
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function() {
-        if (xhr.status === XHR_STATUS.ok) {
+        if (xhr.status === xhrStatus.OK) {
             onSuccessCb(xhr.response);
         } else {
             onError(`Запрос не удался: ${xhr.statusText}`);
@@ -42,7 +42,7 @@ export function ajaxPostRequest(data, onSuccess, onError = errorHandler) {
     const url = 'https://javascript.pages.academy/kekstagram';
 
     xhr.addEventListener('load', function() {
-        if (xhr.status === XHR_STATUS.ok) {
+        if (xhr.status === xhrStatus.OK) {
             onSuccess();
         } else {
             onError(`Запрос не удался: ${xhr.statusText}`);

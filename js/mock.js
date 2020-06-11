@@ -27,11 +27,6 @@ const DATA = {
 })();
 
 
-
-
-
-
-
 //----На основании data массива помищаем необходимое кол-во (totalObj) фотографий со случайно сгенерированными данными из data в новый массив----//
 function makePhotoDataObj(data, container, totalObj) {
     for (let i = 0; i < totalObj; i++) {

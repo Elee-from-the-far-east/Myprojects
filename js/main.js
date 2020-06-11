@@ -1,11 +1,49 @@
-"use strict";
+'use strict';
 
-import {resetToDefault} from  './picture-effects.js'
+import {resetToDefault} from './picture-effects.js';
+import {data} from './data.js';
+import * as backend from './backend.js';
+import {renderPictureElements, clearPictures} from './pictures.js';
+import './form-validation.js';
+import * as utils from './utils.js'
+import * as filters from './filters.js';
 
-import * as backend from  './backend.js'
-import {renderPictureElements} from './pictures.js';
-import './form-validation.js'
+const defaultFilter = document.querySelector('#filter-default');
+const filterRandom = document.querySelector('#filter-random');
+const filterDisscussed = document.querySelector('#filter-discussed');
+const picturesContainer = document.querySelector('.pictures');
+const picture = picturesContainer.querySelectorAll('.pictures')
+const filterButtons = document.querySelectorAll('.img-filters__button')
+
+export let clickedFIlter= 'filter-default';
 
 
 
-backend.ajaxGetRequest(renderPictureElements);
+
+
+filterDisscussed.addEventListener('click', function(e) {
+    clickedFIlter=e.target.id;
+    clearPictures();
+    utils.classToggler(filterButtons,filterDisscussed)
+    renderPictureElements(filters.sortByPopularity(data));
+});
+
+defaultFilter.addEventListener('click', function(e) {
+    clickedFIlter=e.target.id;
+    clearPictures();
+    utils.classToggler(filterButtons,defaultFilter)
+    renderPictureElements(data);
+});
+
+filterRandom.addEventListener('click', function(e) {
+    clickedFIlter=e.target.id;
+    clearPictures();
+    utils.classToggler(filterButtons,filterRandom)
+    renderPictureElements(filters.sortByRandom(data));
+});
+
+renderPictureElements(data);
+
+// backend.ajaxGetRequest(renderPictureElements);
+
+
