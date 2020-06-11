@@ -1,7 +1,6 @@
 'use strict';
 
 import * as utils from './utils.js';
-import {resetToDefault} from './picture-effects.js'
 
 const xhrStatus = {
     OK: 200,
@@ -92,12 +91,12 @@ export function errorHandler(message) {
     newElement.querySelector('.error__button').
         addEventListener('click', function() {
             newElement.remove();
-            resetToDefault()
+            resetToDefault();
         });
     document.addEventListener('keydown', function(e) {
         if (utils.isEscPressed(e)) newElement.querySelector('.error__button').
             click();
-        resetToDefault()
+        resetToDefault();
     }, {once: true});
     document.body.append(newElement);
 }

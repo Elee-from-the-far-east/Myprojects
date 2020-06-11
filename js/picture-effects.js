@@ -130,11 +130,11 @@ function effectChangeHandler(evt) {
 };
 
 //----Обработчик Драг анд Дроп на ползунке смены уровня эффекта----//
-function pinMouseDownHandler (event, callback) {
+function pinMouseDownHandler(event, callback) {
     event.preventDefault();
     let shiftX = event.clientX - pin.getBoundingClientRect().left;
 
-    function mouseMoveHandler (event) {
+    function mouseMoveHandler(event) {
         event.preventDefault();
         let newLeft = event.clientX - shiftX -
             pinLevelLine.getBoundingClientRect().left;
@@ -156,7 +156,7 @@ function pinMouseDownHandler (event, callback) {
 
     };
 
-    function mouseUpHandler () {
+    function mouseUpHandler() {
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
 
@@ -172,7 +172,7 @@ function pinMouseDownHandler (event, callback) {
 };
 
 //----Показазть загруженную фотку на экране редактирования фото и вариантах фильтра----//
-function showBlobImg () {
+function showBlobImg() {
     const blobImage = imageInput.files[0];
     previewPhotoImg.src = URL.createObjectURL(blobImage);
     for (let item of effectPreviewImg) {
@@ -183,7 +183,7 @@ function showBlobImg () {
 };
 
 //----Удалить загруженную фотку на экране редактирования фото и вариантах фильтра----//
-export function deleteBlobImage () {
+export function deleteBlobImage() {
     const blobImage = imageInput.files[0];
     for (let item of effectPreviewImg) {
         item.style.backgroundImage = `url('${URL.revokeObjectURL(
@@ -203,13 +203,13 @@ scaleControlMinus.addEventListener('click', function() {
 effectsBlock.addEventListener('change', effectChangeHandler);
 
 uploadButton.addEventListener('change', function() {
+    resetToDefault();
     utils.openElement(editForm);
     showBlobImg();
 });
 editFormCloseButton.addEventListener('click', function() {
     utils.closeElement(editForm);
     deleteBlobImage();
-
 });
 
 pin.addEventListener('mousedown', function(event) {
@@ -220,6 +220,8 @@ form.addEventListener('submit', function(e) {
     e.preventDefault();
     ajaxPostRequest(new FormData(form), function() {
         utils.closeElement(editForm);
+        resetToDefault();
+        form.reset();
     });
 });
 

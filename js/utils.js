@@ -1,57 +1,71 @@
-"use strict";
-
-import {resetToDefault, form, deleteBlobImage} from './picture-effects.js'
-import {data} from './backend.js'
-// import {data} from './data.js'
+'use strict';
 
 const enterEventCode = 'Enter';
 const escEventCode = 'Escape';
-let elementToClose;
 
 const isEscPressed = evt => evt.code === escEventCode;
 const isEnterPressed = evt => evt.code === enterEventCode;
 let check = (elem) => console.log(elem);
 
-
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-
-const escPressHandler = (evt) => {
+function escPressHandler(element, evt) {
     if (isEscPressed(evt)) {
-        closeElement(elementToClose);
-        deleteBlobImage();
+        closeElement(element);
+
     }
 };
 
-const openElement = (element) => {
+function openElement(element) {
     element.classList.remove('hidden');
-    elementToClose = element;
-    document.addEventListener('keydown', escPressHandler);
+    document.addEventListener('keydown', escPressHandler.bind(this, element));
 };
 
-const closeElement = (element) => {
+function closeElement(element) {
     element.classList.add('hidden');
     document.removeEventListener('keydown', escPressHandler);
-    document.body.classList.remove('modal-open')
-    resetToDefault()
-    form.reset();
+    document.body.classList.remove('modal-open');
 };
 
- function classToggler(arrToclear, element) {
-    arrToclear.forEach(item => item.classList.remove('img-filters__button--active'));
+function classToggler(arrToclear, element) {
+    arrToclear.forEach(
+        item => item.classList.remove('img-filters__button--active'));
     element.classList.add('img-filters__button--active');
 }
 
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function executedFunction() {
+        const context = this;
+        const args = arguments;
+        const later = function() {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
 
-export {classToggler,
+        const callNow = immediate && !timeout;
+
+        clearTimeout(timeout);
+
+        timeout = setTimeout(later, wait);
+
+        if (callNow) {
+            func.apply(context, args);
+        }
+    };
+};
+
+export {
+    debounce,
+    classToggler,
     openElement,
     closeElement,
     check,
     escPressHandler,
     isEscPressed,
     isEnterPressed,
-    getRandomInt
+    getRandomInt,
 };
 

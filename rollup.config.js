@@ -15,7 +15,7 @@ export default {
     },
     plugins: [
         babel({ babelHelpers: 'bundled' }),
-        // terser(),
+        terser(),
         resolve({
             jsnext: true,
             main: true,

@@ -1,13 +1,11 @@
-"use strict";
-
-import * as utils from './utils.js'
+'use strict';
 
 const uploadSection = document.querySelector('.img-upload');
 const hashTag = uploadSection.querySelector('.text__hashtags');
 const textArea = uploadSection.querySelector('.text__description');
 const submitButton = uploadSection.querySelector('.img-upload__submit');
 
-function hashTagValidateHandler (element) {
+function hashTagValidateHandler(element) {
 
     let regExp = /(#[^#\s]{1,19})/g;
     let str = element.value;
@@ -15,11 +13,13 @@ function hashTagValidateHandler (element) {
     let isTrue = (regExp, str) => regExp.test(str);
 
     if (isTrue(/(?<!\w)#(?!\w)/, str)) {
-        element.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
+        element.setCustomValidity(
+            'Хеш-тег не может состоять только из одной решётки');
         element.reportValidity();
         element.style.outline = '3px solid red';
 
-    } else if (isTrue(/[^#\w\s]{1,}(?=.*)|((?<!#)(\b\w{1,19}\b ?){1,5})/, str)) {
+    } else if (isTrue(/[^#\w\s]{1,}(?=.*)|((?<!#)(\b\w{1,19}\b ?){1,5})/,
+        str)) {
         element.setCustomValidity('Хеш-тег начинается c решетшки');
         element.reportValidity();
         element.style.outline = '3px solid red';
@@ -30,7 +30,8 @@ function hashTagValidateHandler (element) {
         element.style.outline = '3px solid red';
     } else if (isTrue(/((?<=\s)#(?!\w))/, str)) {
         console.log('ssd');
-        element.setCustomValidity('Хеш-тег не может состоять только из одной решётки;');
+        element.setCustomValidity(
+            'Хеш-тег не может состоять только из одной решётки;');
         element.reportValidity();
         element.style.outline = '3px solid red';
     } else if (isTrue(/(#[^#\s]{1,19} ?){6,}/, str)) {
@@ -38,14 +39,14 @@ function hashTagValidateHandler (element) {
         element.reportValidity();
         element.style.outline = '3px solid red';
     } else if (isTrue(/(#[^#\s]{20,} ?)/, str)) {
-        element.setCustomValidity('Максимальная длина одного хэш-тега может быть 20 символов, включая решётку');
+        element.setCustomValidity(
+            'Максимальная длина одного хэш-тега может быть 20 символов, включая решётку');
         element.reportValidity();
         element.style.outline = '3px solid red';
     } else {
         element.setCustomValidity('');
         element.reportValidity();
         element.style.outline = '';
-
 
     }
     if (arr) {
@@ -59,7 +60,8 @@ function hashTagValidateHandler (element) {
             }
 
             if (similiar > 1) {
-                element.setCustomValidity('Один и тот же хэш-тег не может быть использован дважды');
+                element.setCustomValidity(
+                    'Один и тот же хэш-тег не может быть использован дважды');
                 element.reportValidity();
                 element.style.outline = '3px solid red';
 
@@ -67,13 +69,12 @@ function hashTagValidateHandler (element) {
         }
     }
 
-
 };
 
-
-function textAreaValidateHandler (element) {
+function textAreaValidateHandler(element) {
     if (element.validity.tooLong) {
-        element.setCustomValidity('длина комментария не может составлять больше 140 символов');
+        element.setCustomValidity(
+            'длина комментария не может составлять больше 140 символов');
         element.style.outline = '3px solid red';
     } else {
         element.setCustomValidity('');
@@ -82,16 +83,16 @@ function textAreaValidateHandler (element) {
 
 };
 
-submitButton.addEventListener('click', function () {
+submitButton.addEventListener('click', function() {
     hashTagValidateHandler(hashTag);
     textAreaValidateHandler(textArea);
 });
 
-hashTag.addEventListener('keydown', function (evt) {
+hashTag.addEventListener('keydown', function(evt) {
     evt.stopPropagation();
-})
+});
 
-textArea.addEventListener('keydown', function (evt) {
+textArea.addEventListener('keydown', function(evt) {
     evt.stopPropagation();
-})
+});
 
