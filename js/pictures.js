@@ -11,7 +11,7 @@ const pictureTemplate = document.querySelector('#picture').
     content.
     querySelector('.picture');
 
-
+//----Удаляет все мини фото----//
 export function clearPictures () {
     while (picturesContainer.querySelectorAll('.picture')[0]) {
         picturesContainer.querySelectorAll('.picture')[0].remove();

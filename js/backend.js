@@ -6,6 +6,7 @@ import {resetToDefault} from './picture-effects.js'
 const xhrStatus = {
     OK: 200,
 };
+export let data;
 
 export function ajaxGetRequest(onSuccessCb, onError = errorHandler) {
 
@@ -18,6 +19,7 @@ export function ajaxGetRequest(onSuccessCb, onError = errorHandler) {
     xhr.addEventListener('load', function() {
         if (xhr.status === xhrStatus.OK) {
             onSuccessCb(xhr.response);
+            data = xhr.response;
         } else {
             onError(`Запрос не удался: ${xhr.statusText}`);
         }

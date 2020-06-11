@@ -81,7 +81,7 @@ let currentFilter;
 let filterCallback;
 
 //----Сброс значений по умолчанию----//
-const resetToDefault = () => {
+function resetToDefault() {
     if (clickedClass) previewPhoto.classList.remove(clickedClass);
     if (clickedNode && clickedNode.value !== 'none') {
         effectElement.classList.remove('hidden');
@@ -99,7 +99,7 @@ const resetToDefault = () => {
 };
 
 //----Обработчик нажатия на +----//
-const scaleMinusClickHandler = (callback) => {
+function scaleMinusClickHandler(callback) {
     let scaleStep = 25;
     let scaleValue = parseInt(scaleControlInput.value);
     if (scaleValue > scaleStep) scaleControlInput.value = (scaleValue -
@@ -109,7 +109,7 @@ const scaleMinusClickHandler = (callback) => {
 };
 
 //----Обработчик нажатия на - ----//
-const scalePlusClickHandler = (callback) => {
+function scalePlusClickHandler(callback) {
     let scaleStep = 25;
     let maxScale = 100;
     let scaleValue = parseInt(scaleControlInput.value);
@@ -120,7 +120,7 @@ const scalePlusClickHandler = (callback) => {
 };
 
 //----Обработчик смены фильтра----//
-const effectChangeHandler = (evt) => {
+function effectChangeHandler(evt) {
     clickedNode = evt.target;
     resetToDefault();
     currentFilter = effectValueToFilterName[evt.target.value];
@@ -130,11 +130,11 @@ const effectChangeHandler = (evt) => {
 };
 
 //----Обработчик Драг анд Дроп на ползунке смены уровня эффекта----//
-const pinMouseDownHandler = (event, callback) => {
+function pinMouseDownHandler (event, callback) {
     event.preventDefault();
     let shiftX = event.clientX - pin.getBoundingClientRect().left;
 
-    const mouseMoveHandler = (event) => {
+    function mouseMoveHandler (event) {
         event.preventDefault();
         let newLeft = event.clientX - shiftX -
             pinLevelLine.getBoundingClientRect().left;
@@ -156,7 +156,7 @@ const pinMouseDownHandler = (event, callback) => {
 
     };
 
-    const mouseUpHandler = () => {
+    function mouseUpHandler () {
         document.removeEventListener('mousemove', mouseMoveHandler);
         document.removeEventListener('mouseup', mouseUpHandler);
 
@@ -172,7 +172,7 @@ const pinMouseDownHandler = (event, callback) => {
 };
 
 //----Показазть загруженную фотку на экране редактирования фото и вариантах фильтра----//
-const showBlobImg = () => {
+function showBlobImg () {
     const blobImage = imageInput.files[0];
     previewPhotoImg.src = URL.createObjectURL(blobImage);
     for (let item of effectPreviewImg) {
@@ -183,7 +183,7 @@ const showBlobImg = () => {
 };
 
 //----Удалить загруженную фотку на экране редактирования фото и вариантах фильтра----//
-export const deleteBlobImage = () => {
+export function deleteBlobImage () {
     const blobImage = imageInput.files[0];
     for (let item of effectPreviewImg) {
         item.style.backgroundImage = `url('${URL.revokeObjectURL(
@@ -195,7 +195,8 @@ export const deleteBlobImage = () => {
 scaleControlPlus.addEventListener('click', function() {
     scalePlusClickHandler(transformToCallback.scale);
 });
-scaleControlMinus.addEventListener('click', function() {;
+scaleControlMinus.addEventListener('click', function() {
+    ;
     scaleMinusClickHandler(transformToCallback.scale);
 
 });

@@ -1,7 +1,8 @@
 "use strict";
 
 import {resetToDefault, form, deleteBlobImage} from './picture-effects.js'
-import {data} from './data.js'
+import {data} from './backend.js'
+// import {data} from './data.js'
 
 const enterEventCode = 'Enter';
 const escEventCode = 'Escape';

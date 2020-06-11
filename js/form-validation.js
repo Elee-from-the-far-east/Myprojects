@@ -7,7 +7,7 @@ const hashTag = uploadSection.querySelector('.text__hashtags');
 const textArea = uploadSection.querySelector('.text__description');
 const submitButton = uploadSection.querySelector('.img-upload__submit');
 
-const hashTagValidateHandler = (element) => {
+function hashTagValidateHandler (element) {
 
     let regExp = /(#[^#\s]{1,19})/g;
     let str = element.value;
@@ -18,7 +18,6 @@ const hashTagValidateHandler = (element) => {
         element.setCustomValidity('Хеш-тег не может состоять только из одной решётки');
         element.reportValidity();
         element.style.outline = '3px solid red';
-
 
     } else if (isTrue(/[^#\w\s]{1,}(?=.*)|((?<!#)(\b\w{1,19}\b ?){1,5})/, str)) {
         element.setCustomValidity('Хеш-тег начинается c решетшки');
@@ -72,7 +71,7 @@ const hashTagValidateHandler = (element) => {
 };
 
 
-const textAreaValidateHandler = (element) => {
+function textAreaValidateHandler (element) {
     if (element.validity.tooLong) {
         element.setCustomValidity('длина комментария не может составлять больше 140 символов');
         element.style.outline = '3px solid red';
