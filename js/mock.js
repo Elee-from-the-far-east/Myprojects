@@ -1,15 +1,15 @@
 'use strict';
-//----Константы----//
+// ----Константы----//
 const numberOfObjects = 25;
 const minLikes = 15;
 const maxLikes = 200;
 const photoData = [];
 
-//----Мок данные----//
+// ----Мок данные----//
 const DATA = {
-    url: [],
-    likes: [],
-    comments: [
+    'url': [],
+    'likes': [],
+    'comments': [
         'Всё отлично!',
         'В целом всё неплохо. Но не всё',
         'Когда вы делаете фотографию, хорошо бы убирать палец из кадра',
@@ -18,7 +18,7 @@ const DATA = {
         'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше',
         'Лица у людей на фотке перекошены, как будто их избивают',
         'Как можно было поймать такой неудачный момент?!'],
-    description: [
+    'description': [
         'Тестим новую камеру!',
         'Затусили с друзьями на море',
         'Как же круто тут кормят',
@@ -27,35 +27,32 @@ const DATA = {
         'Цените тех, кто рядом с вами и отгоняйте все сомненья.',
         'Не обижайте всех словами......',
         'Вот это тачка!'],
-};
-
-//----Заполняем массивы DATA.url & likes----//
+};// ----Заполняем массивы DATA.url & likes----//
 (function() {
     for (let i = 1; i <= numberOfObjects; i++) {
         DATA.url.push(`photos/${i}.jpg`);
     }
-})();
+}());
 (function() {
     for (let i = minLikes; i <= maxLikes; i++) {
         DATA.likes.push(i);
 
     }
-})();
+}());
 
-//----На основании data массива помищаем необходимое кол-во (totalObj) фотографий со случайно сгенерированными данными из data в новый массив----//
+// ----На основании data массива помищаем необходимое кол-во (totalObj) фотографий со случайно сгенерированными данными из data в новый массив----//
 function makePhotoDataObj(data, container, totalObj) {
     for (let i = 0; i < totalObj; i++) {
-        let obj = {};
-        for (let dataKey in data) {
-            let randomNumber = getRandomInt(data[dataKey].length - 1);
+        const obj = {};
+        for (const dataKey in data) {
+            const randomNumber = getRandomInt(data[dataKey].length - 1);
             if (dataKey === 'url') {
                 obj[dataKey] = data[dataKey][i];
             }
             if (dataKey === 'comments') {
                 obj[dataKey] = [];
                 for (let i = 0; i < 2; i++) {
-                    obj[dataKey].push(
-                        data[dataKey][getRandomInt(data[dataKey].length - 1)]);
+                    obj[dataKey].push(data[dataKey][getRandomInt(data[dataKey].length - 1)]);
                 }
             }
             if (dataKey !== 'urlNumbers' && dataKey !== 'likesNumbers' &&

@@ -3,7 +3,7 @@
 import * as utils from './utils.js';
 
 const xhrStatus = {
-    OK: 200,
+    'OK': 200,
 };
 export let data;
 
@@ -12,7 +12,6 @@ export function ajaxGetRequest(onSuccessCb, onError = errorHandler) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     const url = 'https://javascript.pages.academy/kekstagram/data';
-
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function() {
@@ -41,7 +40,6 @@ export function ajaxGetRequest(onSuccessCb, onError = errorHandler) {
 export function ajaxPostRequest(data, onSuccess, onError = errorHandler) {
     const xhr = new XMLHttpRequest();
     const url = 'https://javascript.pages.academy/kekstagram';
-
     xhr.addEventListener('load', function() {
         if (xhr.status === xhrStatus.OK) {
             onSuccess();
@@ -65,7 +63,7 @@ export function ajaxPostRequest(data, onSuccess, onError = errorHandler) {
 }
 
 export function successHandler(message) {
-    let newElement = document.querySelector('#success').
+    const newElement = document.querySelector('#success').
         content.
         querySelector('.success').
         cloneNode(true);
@@ -75,15 +73,17 @@ export function successHandler(message) {
             newElement.remove();
         });
     document.addEventListener('keydown', function(e) {
-        if (utils.isEscPressed(e)) newElement.querySelector('.success__button').
-            click();
+        if (utils.isEscPressed(e)) {
+            newElement.querySelector('.success__button').
+                click();
+        }
 
-    }, {once: true});
+    }, {'once': true});
     document.body.append(newElement);
 }
 
 export function errorHandler(message) {
-    let newElement = document.querySelector('#error').
+    const newElement = document.querySelector('#error').
         content.
         querySelector('.error').
         cloneNode(true);
@@ -94,10 +94,12 @@ export function errorHandler(message) {
             resetToDefault();
         });
     document.addEventListener('keydown', function(e) {
-        if (utils.isEscPressed(e)) newElement.querySelector('.error__button').
-            click();
+        if (utils.isEscPressed(e)) {
+            newElement.querySelector('.error__button').
+                click();
+        }
         resetToDefault();
-    }, {once: true});
+    }, {'once': true});
     document.body.append(newElement);
 }
 
