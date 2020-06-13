@@ -29,7 +29,10 @@ const pictureTemplate = document.querySelector('#picture').
 
 // ----Переменные----//
 let commentCount;
-let clickedItem;// ----Удаляет все мини фото----//
+let clickedItem;
+
+
+// ----Удаляет все мини фото----//
 export function clearPictures () {
     while (picturesContainer.querySelectorAll('.picture')[0]) {
         picturesContainer.querySelectorAll('.picture')[0].remove();
@@ -42,13 +45,7 @@ function makePictureElement(data) {
     newElement.querySelector('.picture__img').src = data.url;
     newElement.querySelector('.picture__likes').textContent = data.likes;
     newElement.querySelector('.picture__comments').textContent = data.comments.length;
-    newElement.addEventListener('click', function(evt) {
-        utils.openElement(bigPicture);
-        document.body.classList.add('modal-open');
-        bigPictureClickHandler(evt, data);
-
-    });
-
+    newElement.addEventListener('click', bigPictureClickHandler.bind(this, data));
     return newElement;
 }
 
@@ -64,9 +61,12 @@ export function renderPictureElements(data) {
 }
 
 
+
 // ----Навешивает данные на полноэкранное изображение----//
-export function bigPictureClickHandler(evt, data) {
+export function bigPictureClickHandler(data, evt) {
     clickedItem = evt.target;
+    utils.openElement(bigPicture);
+    document.body.classList.add('modal-open');
     commentCount = data.comments.length;
     appendPictureData(data);
     deleteNodes(comments);
@@ -127,7 +127,7 @@ function renderCommentElements(data, container) {
 }
 
 // ----Показывает скрытые комментарии----//
-function showHiddenComments() {
+function showHiddenCommentsHandler() {
     for (const comment of comments) {
         comment.classList.remove('hidden');
     }
@@ -138,8 +138,8 @@ function showHiddenComments() {
 function addComment(callback) {
     const avatar = `img/avatar-${Math.ceil(Math.random() * 6)}.svg`;
     socialCommentblock.insertAdjacentElement('afterbegin', makeCommentElement({
-        'message': commentInput.value,
-        avatar,
+        message: commentInput.value,
+        avatar:avatar,
     }));
     commentCount += 1;
     callback(avatar, commentInput.value);
@@ -162,7 +162,7 @@ bigPictureCloseButton.addEventListener('click', function() {
 });
 
 // ----Вешает обработчик показа скрытых комментов----//
-loadCommentButton.addEventListener('click', showHiddenComments);
+loadCommentButton.addEventListener('click', showHiddenCommentsHandler);
 
 // ----Вешает обработчик загрузки нового коммента----//
 uploadComment.addEventListener('click', function() {

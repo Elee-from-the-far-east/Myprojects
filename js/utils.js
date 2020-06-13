@@ -6,6 +6,7 @@ const escEventCode = 'Escape';
 const isEscPressed = (evt) => evt.code === escEventCode;
 const isEnterPressed = (evt) => evt.code === enterEventCode;
 const check = (elem) => console.log(elem);
+
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
@@ -29,22 +30,28 @@ function closeElement(element) {
 }
 
 function classToggler(arrToclear, element) {
-    arrToclear.forEach((item) => item.classList.remove('img-filters__button--active'));
+    arrToclear.forEach(
+        (item) => item.classList.remove('img-filters__button--active'));
     element.classList.add('img-filters__button--active');
 }
 
 function debounce(func, wait) {
     let timeout;
-return  function ()  {
-        function later () {
+    return (e) => {
+        function later() {
             timeout = null;
         }
+
         const callNow = !timeout;
         clearTimeout(timeout);
         timeout = setTimeout(later, wait);
-        if (callNow) func(arguments[0])
+        if (callNow) {
+            func(e);
+        }
     };
 }
+
+
 
 export {
     debounce,

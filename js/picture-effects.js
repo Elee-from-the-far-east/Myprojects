@@ -77,7 +77,10 @@ const transformToCallback = {
 let clickedClass;
 let clickedNode;
 let currentFilter;
-let filterCallback;// ----Сброс значений по умолчанию----//
+let filterCallback;
+
+
+// ----Сброс значений по умолчанию----//
 function resetToDefault() {
     if (clickedClass) {
         previewPhoto.classList.remove(clickedClass);
@@ -106,7 +109,6 @@ function scaleMinusClickHandler(callback) {
         scaleStep}%`;
     }
     callback(scaleControlInput.value);
-
 }
 
 // ----Обработчик нажатия на - ----//
