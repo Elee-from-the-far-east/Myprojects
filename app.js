@@ -90,7 +90,7 @@ const updateIncomeItemList = function(id) {
    const percentage = newItem.querySelector('.item__percentage');
    newItem.querySelector('.item__description').textContent = budgetItemData.description;
    newItem.querySelector('.item__value').textContent = budgetItemData.value;
-   newItem.querySelector('.item').id = budgetItemData.id;
+   newItem.querySelector('.item').id = selectorOfTmpl + '-' +budgetItemData.id;
    if(percentage)percentage.textContent = (Number(budgetItemData.value)/totalData.totalInc*100).toFixed(0)+'%';
    return newItem
 
@@ -113,7 +113,7 @@ const updateIncomeItemList = function(id) {
   };
 
     const result = totalData[budgetType].find(el=>{
-      return Array.from(typeMap[budgetType].listItems).every(i=>Number(i.id)!==el.id)
+      return Array.from(typeMap[budgetType].listItems).every(i=>Number(i.id.split('-')[1])!==el.id)
     });
     if(result){
       typeMap[budgetType].container.appendChild(createBudgetItem(result,typeMap[budgetType].selector,totalData));
