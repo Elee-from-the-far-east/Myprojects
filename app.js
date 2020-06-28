@@ -1,5 +1,5 @@
 const uiController = (function () {
-  const selectorsToQuerySelectorArg = {
+  const querySelectors = {
     inputType: ".add__type",
     inputDescription: ".add__description",
     inputValue: ".add__value",
@@ -17,21 +17,21 @@ const uiController = (function () {
   };
 
   const getQueryArgs = function () {
-    return selectorsToQuerySelectorArg;
+    return querySelectors;
   };
 
   const getInput = function () {
     const inputData = {
-      type: document.querySelector(selectorsToQuerySelectorArg.inputType).value,
+      type: document.querySelector(querySelectors.inputType).value,
       description: document.querySelector(
-        selectorsToQuerySelectorArg.inputDescription
+        querySelectors.inputDescription
       ).value,
-      value: document.querySelector(selectorsToQuerySelectorArg.inputValue)
+      value: document.querySelector(querySelectors.inputValue)
         .value,
     };
-    document.querySelector(selectorsToQuerySelectorArg.inputDescription).value =
+    document.querySelector(querySelectors.inputDescription).value =
       "";
-    document.querySelector(selectorsToQuerySelectorArg.inputValue).value = "";
+    document.querySelector(querySelectors.inputValue).value = "";
     return inputData;
   };
 
@@ -49,38 +49,38 @@ const uiController = (function () {
 
   const renderCurrentMonth = function () {
     document.querySelector(
-      selectorsToQuerySelectorArg.currentMonth
+      querySelectors.currentMonth
     ).textContent = new Date().toLocaleDateString("ru", { month: "long" });
   };
 
   const renderBudgetNumbers = function (expenses) {
     const percent = ((expenses.totalExp / expenses.totalInc) * 100).toFixed(0);
     document.querySelector(
-      selectorsToQuerySelectorArg.budgetIncome
+      querySelectors.budgetIncome
     ).textContent = expenses.totalInc;
     document.querySelector(
-      selectorsToQuerySelectorArg.budgetExpenses
+      querySelectors.budgetExpenses
     ).textContent = expenses.totalExp;
     document.querySelector(
-      selectorsToQuerySelectorArg.availableBudget
+      querySelectors.availableBudget
     ).textContent = expenses.availableSum;
     document.querySelector(
-      selectorsToQuerySelectorArg.budgetExpensesPercent
+      querySelectors.budgetExpensesPercent
     ).textContent = isNaN(percent) ? 0 + "%" : percent + "%";
   };
 
   const clearBudgetItems = function () {
     Array.from(
-      document.querySelector(selectorsToQuerySelectorArg.incomeList).children
+      document.querySelector(querySelectors.incomeList).children
     ).forEach((el) => el.remove());
     Array.from(
-      document.querySelector(selectorsToQuerySelectorArg.expensesList).children
+      document.querySelector(querySelectors.expensesList).children
     ).forEach((el) => el.remove());
   };
 
   const updateIncomeItemList = function (id) {
     Array.from(
-      document.querySelector(selectorsToQuerySelectorArg.incomeList).children
+      document.querySelector(querySelectors.incomeList).children
     )
       .find((el) => el.id === id)
       .remove();
@@ -88,7 +88,7 @@ const uiController = (function () {
 
   const updateExpenseItemList = function (id) {
     Array.from(
-      document.querySelector(selectorsToQuerySelectorArg.expensesList).children
+      document.querySelector(querySelectors.expensesList).children
     )
       .find((el) => el.id === id)
       .remove();
@@ -115,35 +115,40 @@ const uiController = (function () {
   };
 
   const renderBudgetItems = function (totalData, budgetType) {
-    const typeMap = {
+    const DOMMap = {
       inc: {
         container: document.createDocumentFragment(),
-        list: document.querySelector(selectorsToQuerySelectorArg.incomeList),
+        list: document.querySelector(querySelectors.incomeList),
         listItems: document.querySelector(
-          selectorsToQuerySelectorArg.incomeList
+          querySelectors.incomeList
         ).children,
-        selector: selectorsToQuerySelectorArg.incomeTmpl,
+        selector: querySelectors.incomeTmpl,
       },
       exp: {
         container: document.createDocumentFragment(),
-        list: document.querySelector(selectorsToQuerySelectorArg.expensesList),
+        list: document.querySelector(querySelectors.expensesList),
         listItems: document.querySelector(
-          selectorsToQuerySelectorArg.expensesList
+          querySelectors.expensesList
         ).children,
-        selector: selectorsToQuerySelectorArg.expenseTmpl,
+        selector: querySelectors.expenseTmpl,
       },
     };
+    // короче чем ниже:
+    // DOMMap[budgetType].container.appendChild(
+    //     createBudgetItem(totalData[budgetType][totalData[budgetType].length-1], DOMMap[budgetType].selector, totalData)
+    // );
+    // DOMMap[budgetType].list.appendChild(DOMMap[budgetType].container);
 
     const result = totalData[budgetType].find((el) => {
-      return Array.from(typeMap[budgetType].listItems).every(
+      return Array.from(DOMMap[budgetType].listItems).every(
         (i) => Number(i.id.split("-")[1]) !== el.id
       );
     });
     if (result) {
-      typeMap[budgetType].container.appendChild(
-        createBudgetItem(result, typeMap[budgetType].selector, totalData)
+      DOMMap[budgetType].container.appendChild(
+        createBudgetItem(result, DOMMap[budgetType].selector, totalData)
       );
-      typeMap[budgetType].list.appendChild(typeMap[budgetType].container);
+      DOMMap[budgetType].list.appendChild(DOMMap[budgetType].container);
     }
   };
 
@@ -249,7 +254,7 @@ const controller = (function (dataController, uiController) {
 
   const deleteBudgetItemHandler = function (e) {
     if (e.target.closest("button")) {
-      const id = e.target.closest(".item").id;
+      const id = e.target.closest(".item").id; // id можно разбить сплитом тут а не ниже
       if (e.target.closest(querySelectorArgs.incomeList)) {
         uiController.updateIncomeItemList(id);
         dataController.updateData(id, "inc");
