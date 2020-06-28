@@ -173,14 +173,12 @@ const dataController = (function() {
   };
 
   const findTotals = function() {
-    data.totalInc = data.inc.map((el) => el.value).reduce(
-        (previousValue, currentValue) =>
-            Number(currentValue) + Number(previousValue),
+    data.totalInc = data.inc.reduce((previousValue, currentValue) =>
+            Number(currentValue.value) + Number(previousValue),
         0,
     );
-    data.totalExp = data.exp.map((el) => el.value).reduce(
-        (previousValue, currentValue) =>
-            Number(currentValue) + Number(previousValue),
+    data.totalExp = data.exp.reduce((previousValue, currentValue) =>
+            Number(currentValue.value) + Number(previousValue),
         0,
     );
     data.availableSum =
