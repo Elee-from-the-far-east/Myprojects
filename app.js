@@ -57,7 +57,7 @@ const uiController = (function() {
     const budgetIncome = document.querySelector(selectorsToQuerySelectorArg.budgetIncome);
     const budgetExpenses = document.querySelector(selectorsToQuerySelectorArg.budgetExpenses);
     const budgetExpensesPercent = document.querySelector(selectorsToQuerySelectorArg.budgetExpensesPercent);
-    const availableSum = document.querySelector(selectorsToQuerySelectorArg.availableBudget)
+    const availableSum = document.querySelector(selectorsToQuerySelectorArg.availableBudget);
     budgetIncome.textContent = expenses.totalInc;
     budgetExpenses.textContent = expenses.totalExp;
     const percent = ((expenses.totalExp / expenses.totalInc) * 100).toFixed(0);
@@ -165,7 +165,7 @@ const dataController = (function() {
   };
 
   const updateData = function(id, type) {
-    const index = data[type].findIndex(el=>el.id===Number(id));
+    const index = data[type].findIndex(el=>el.id===Number(id.split('-')[1]));
     data[type].splice(index,1);
     findTotals();
     storeDataToLocalStorage();
@@ -192,7 +192,7 @@ const dataController = (function() {
   };
 
   const storeData = function({description, value, type}) {
-    const id = data[type].length;
+    const id = data[type][0]?data[type][data[type].length-1].id+1:0;
     data[type].push({id, value, description});
     findTotals();
     storeDataToLocalStorage()
