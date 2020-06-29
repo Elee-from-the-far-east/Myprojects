@@ -14,6 +14,7 @@ const uiController = (function () {
     expenseTmpl: "#expense",
     incomeTmpl: "#income",
     deleteButton: ".item__delete--btn",
+    budgetListsContainer: ".container",
   };
 
   const getQueryArgs = function () {
@@ -21,28 +22,30 @@ const uiController = (function () {
   };
 
   const getInput = function () {
-    const inputData = {
+    return {
       type: document.querySelector(querySelectors.inputType).value,
-      description: document.querySelector(
-        querySelectors.inputDescription
-      ).value,
-      value: document.querySelector(querySelectors.inputValue)
+      description: document.querySelector(querySelectors.inputDescription)
         .value,
+      value: document.querySelector(querySelectors.inputValue).value,
     };
-    document.querySelector(querySelectors.inputDescription).value =
-      "";
-    document.querySelector(querySelectors.inputValue).value = "";
-    return inputData;
   };
 
   const validateInput = function (input, data) {
     if (!input.description.trim()) {
       alert("Введите название статьи расходов или доходов!");
+      document.querySelector(querySelectors.inputDescription).focus();
       return false;
     } else if (input.type === "exp" && !data.totalInc) {
       alert("Введите бюджет перед тем как вносить траты!");
+      document.querySelector(querySelectors.inputDescription).focus();
+      return false;
+    } else if (!input.value.trim()) {
+      alert("Введите сумму!");
+      document.querySelector(querySelectors.inputValue).focus();
       return false;
     } else {
+      document.querySelector(querySelectors.inputDescription).value = "";
+      document.querySelector(querySelectors.inputValue).value = "";
       return true;
     }
   };
@@ -54,19 +57,21 @@ const uiController = (function () {
   };
 
   const renderBudgetNumbers = function (expenses) {
-    const percent = ((expenses.totalExp / expenses.totalInc) * 100).toFixed(0);
+    const percent = Math.round((expenses.totalExp / expenses.totalInc) * 100);
     document.querySelector(
       querySelectors.budgetIncome
-    ).textContent = expenses.totalInc;
+    ).textContent = formatNumber(expenses.totalInc);
     document.querySelector(
       querySelectors.budgetExpenses
-    ).textContent = expenses.totalExp;
+    ).textContent = expenses.totalExp
+      ? "-" + formatNumber(expenses.totalExp)
+      : "0.00";
     document.querySelector(
       querySelectors.availableBudget
-    ).textContent = expenses.availableSum;
+    ).textContent = formatNumber(expenses.availableSum);
     document.querySelector(
       querySelectors.budgetExpensesPercent
-    ).textContent = isNaN(percent) ? 0 + "%" : percent + "%";
+    ).textContent = isFinite(percent) ? percent + "%" : 0 + "%";
   };
 
   const clearBudgetItems = function () {
@@ -79,13 +84,10 @@ const uiController = (function () {
   };
 
   const updateItemList = function (id, listSelector) {
-    Array.from(
-      document.querySelector(listSelector).children
-    )
+    Array.from(document.querySelector(listSelector).children)
       .find((el) => el.id === id)
       .remove();
   };
-
 
   const createBudgetItem = function (
     budgetItemData,
@@ -95,62 +97,68 @@ const uiController = (function () {
     const tmpl = document.querySelector(selectorOfTmpl);
     const newItem = document.importNode(tmpl.content, true);
     const percentage = newItem.querySelector(".item__percentage");
+    const itemValue = newItem.querySelector(".item__value");
     newItem.querySelector(".item__description").textContent =
       budgetItemData.description;
-    newItem.querySelector(".item__value").textContent = budgetItemData.value;
     newItem.querySelector(".item").id =
       selectorOfTmpl + "-" + budgetItemData.id;
-    if (percentage)
-      percentage.textContent =
-        ((Number(budgetItemData.value) / totalData.totalInc) * 100).toFixed(0) +
-        "%";
+    itemValue.textContent = formatNumber(budgetItemData.value);
+    if (percentage) {
+      percentage.textContent = totalData.totalInc
+        ? ((Number(budgetItemData.value) / totalData.totalInc) * 100).toFixed(
+            0
+          ) + "%"
+        : "0%";
+      itemValue.textContent = "-" + itemValue.textContent;
+    }
     return newItem;
   };
 
-  const renderBudgetItems = function (totalData, budgetType) {
+  const formatNumber = function (number) {
+    number = Math.abs(Number(number)).toFixed(2).split(".");
+    if (number[0].length > 3)
+      number[0] =
+        number[0].slice(0, number[0].length - 3) +
+        "," +
+        number[0].slice(number[0].length - 3);
+    return number[0] + "." + number[1];
+  };
+
+  const renderBudgetItems = function (totalData, budgetType, elementToRender) {
     const DOMMap = {
       inc: {
         container: document.createDocumentFragment(),
         list: document.querySelector(querySelectors.incomeList),
-        listItems: document.querySelector(
-          querySelectors.incomeList
-        ).children,
+        listItems: document.querySelector(querySelectors.incomeList).children,
         selector: querySelectors.incomeTmpl,
       },
       exp: {
         container: document.createDocumentFragment(),
         list: document.querySelector(querySelectors.expensesList),
-        listItems: document.querySelector(
-          querySelectors.expensesList
-        ).children,
+        listItems: document.querySelector(querySelectors.expensesList).children,
         selector: querySelectors.expenseTmpl,
       },
     };
-    // короче чем ниже:
-    // DOMMap[budgetType].container.appendChild(
-    //     createBudgetItem(totalData[budgetType][totalData[budgetType].length-1], DOMMap[budgetType].selector, totalData)
-    // );
-    // DOMMap[budgetType].list.appendChild(DOMMap[budgetType].container);
+    if (!elementToRender && elementToRender !== 0)
+      elementToRender = totalData[budgetType].length - 1;
 
-    const result = totalData[budgetType].find((el) => {
-      return Array.from(DOMMap[budgetType].listItems).every(
-        (i) => Number(i.id.split("-")[1]) !== el.id
-      );
-    });
-    if (result) {
-      DOMMap[budgetType].container.appendChild(
-        createBudgetItem(result, DOMMap[budgetType].selector, totalData)
-      );
-      DOMMap[budgetType].list.appendChild(DOMMap[budgetType].container);
-    }
+    DOMMap[budgetType].container.appendChild(
+      createBudgetItem(
+        totalData[budgetType][elementToRender],
+        DOMMap[budgetType].selector,
+        totalData
+      )
+    );
+    DOMMap[budgetType].list.appendChild(DOMMap[budgetType].container);
   };
 
+
   const renderBudgetItemsOnFirstLoad = function (localStorageData) {
-    localStorageData.inc.forEach(() =>
-      renderBudgetItems(localStorageData, "inc")
+    localStorageData.inc.forEach((el, i) =>
+      renderBudgetItems(localStorageData, "inc", i)
     );
-    localStorageData.exp.forEach(() =>
-      renderBudgetItems(localStorageData, "exp")
+    localStorageData.exp.forEach((el, i) =>
+      renderBudgetItems(localStorageData, "exp", i)
     );
   };
 
@@ -263,10 +271,7 @@ const controller = (function (dataController, uiController) {
       .querySelector(querySelectorArgs.inputButton)
       .addEventListener("click", addExpenseHandler);
     document
-      .querySelector(querySelectorArgs.incomeList)
-      .addEventListener("click", deleteBudgetItemHandler);
-    document
-      .querySelector(querySelectorArgs.expensesList)
+      .querySelector(querySelectorArgs.budgetListsContainer)
       .addEventListener("click", deleteBudgetItemHandler);
   };
 

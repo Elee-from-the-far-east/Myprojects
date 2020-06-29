@@ -173,7 +173,7 @@ body {
     border: 1px solid #28B9B5;
 }
 
-.add__btn:focus { outline: none; }
+.add__btn:focus { outline: 1px solid #28B9B5; }
 
 /***** LISTS *****/
 .container {
@@ -258,7 +258,7 @@ h2 {
     display: none;
 }
 
-.item__delete--btn:focus { outline: none; }
+.item__delete--btn:focus { outline: 1px solid #28B9B5; }
 .item__delete--btn:active { transform: translateY(2px); }
 
 .item:hover .item__delete--btn { display: block; }
