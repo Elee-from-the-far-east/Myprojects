@@ -78,21 +78,14 @@ const uiController = (function () {
     ).forEach((el) => el.remove());
   };
 
-  const updateIncomeItemList = function (id) {
+  const updateItemList = function (id, listSelector) {
     Array.from(
-      document.querySelector(querySelectors.incomeList).children
+      document.querySelector(listSelector).children
     )
       .find((el) => el.id === id)
       .remove();
   };
 
-  const updateExpenseItemList = function (id) {
-    Array.from(
-      document.querySelector(querySelectors.expensesList).children
-    )
-      .find((el) => el.id === id)
-      .remove();
-  };
 
   const createBudgetItem = function (
     budgetItemData,
@@ -168,8 +161,7 @@ const uiController = (function () {
     renderBudgetNumbers,
     clearBudgetItems,
     renderBudgetItems,
-    updateIncomeItemList,
-    updateExpenseItemList,
+    updateItemList,
     validateInput,
     renderBudgetItemsOnFirstLoad,
   });
@@ -256,10 +248,10 @@ const controller = (function (dataController, uiController) {
     if (e.target.closest("button")) {
       const id = e.target.closest(".item").id; // id можно разбить сплитом тут а не ниже
       if (e.target.closest(querySelectorArgs.incomeList)) {
-        uiController.updateIncomeItemList(id);
+        uiController.updateItemList(id, querySelectorArgs.incomeList);
         dataController.updateData(id, "inc");
       } else {
-        uiController.updateExpenseItemList(id);
+        uiController.updateItemList(id, querySelectorArgs.expensesList);
         dataController.updateData(id, "exp");
       }
       uiController.renderBudgetNumbers(dataController.getData());
