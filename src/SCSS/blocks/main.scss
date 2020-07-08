@@ -5,6 +5,7 @@
 @import "./formula";
 @import "./table";
 @import "./btn";
+@import "dashboard";
 
 * {
   box-sizing: border-box;
@@ -20,29 +21,30 @@ body {
 
 .excel {
   position: relative;
+
 }
 
 .excel__header {
   @include set-border-bottom(2);
-  @include pos-absolute;
+  display: flex;
+  justify-content: space-between;
   height: $header-height;
   padding: 5px 10px;
 }
 
 .excel__toolbar {
   @include set-border-bottom(2);
-  @include pos-absolute($header-height);
   height: $header-height;
   padding: 5px 10px;
 }
 
 .excel__formula {
-  @include pos-absolute($header-height * 2);
   @include set-border-bottom(2);
   height: $header-height;
   padding: 5px 10px;
 }
 
 .excel__table {
-  @include pos-absolute($header-height * 3);
+
+  overflow-x: auto;
 }

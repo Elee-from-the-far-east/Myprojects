@@ -17,8 +17,11 @@
   overflow-x: hidden;
   white-space: nowrap;
   text-align: center;
-  overflow-wrap: break-word;
   border: 1px solid $border-color;
+
+  &:focus {
+    outline-color: $button-color;
+  }
 
   &--header {
     background-color: $default-info-cell-color;
@@ -35,9 +38,9 @@
 }
 
 
-.table__row {
-  &--info{
-
-  }
-
-}
+//.table__row {
+//  &--info{
+//
+//  }
+//
+//}
