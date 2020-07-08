@@ -1,0 +1,25 @@
+@import "variables";
+
+@mixin set-color($color: green) {
+  color: $color;
+}
+@mixin set-indents($padding:0,$margin:0) {
+  margin: $margin + px;
+  padding: $padding + px;
+}
+
+@mixin pos-absolute ($top:0) {
+  position: absolute;
+  top: $top;
+  right: 0;
+  left: 0;
+}
+
+@mixin default-flex() {
+  display: flex;
+
+}
+
+@mixin set-border-bottom($px, $color:$border-color) {
+  border-bottom: $px + px solid $color;
+}

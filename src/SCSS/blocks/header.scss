@@ -1,0 +1,29 @@
+@import "../mixins";
+@import "../variables";
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__input {
+  padding: 2px;
+  font-size: 18px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  outline: none;
+
+  &:hover {
+    border: 2px solid $border-color;
+  }
+
+  &:focus {
+    border: 2px solid $button-color;
+  }
+}
+
+/* .header__btn {
+}
+
+.header__button-container {
+} */

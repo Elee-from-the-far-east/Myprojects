@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import "../../../node_modules/normalize.css";
+@import "./header";
+@import "./toolbar";
+@import "./formula";
+@import "./table";
+@import "./btn";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+body {
+  font-size: 14px;
+  font-family: "Roboto", sans-serif;
+}
+
+.excel {
+  position: relative;
+}
+
+.excel__header {
+  @include set-border-bottom(2);
+  @include pos-absolute;
+  height: $header-height;
+  padding: 5px 10px;
+}
+
+.excel__toolbar {
+  @include set-border-bottom(2);
+  @include pos-absolute($header-height);
+  height: $header-height;
+  padding: 5px 10px;
+}
+
+.excel__formula {
+  @include pos-absolute($header-height * 2);
+  @include set-border-bottom(2);
+  height: $header-height;
+  padding: 5px 10px;
+}
+
+.excel__table {
+  @include pos-absolute($header-height * 3);
+}
