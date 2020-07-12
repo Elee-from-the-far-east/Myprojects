@@ -24,7 +24,7 @@
   border-bottom: $px + px solid $color;
 }
 
-@mixin clear-list (){
+@mixin clear-list () {
   margin: 0;
   padding: 0;
   list-style: none;
