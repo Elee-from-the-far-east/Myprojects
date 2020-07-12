@@ -10,7 +10,65 @@ export default class Table extends ExcelComponent {
   };
   columnQnty = this.CHAR__CODES.Z - this.CHAR__CODES.A;
   columnNames = this.createColName();
-  
+
+  constructor(componentElement) {
+    super(componentElement, {
+      name: "Table",
+      listeners: ["mousedown", "mouseup"],
+    });
+  }
+
+  onMousedown(e) {
+    const resizeEl = e.target.closest(".table__resize-el");
+    let startCoords;
+    if (resizeEl) {
+      e.preventDefault();
+      const elementToRz = resizeEl.closest(".table__column");
+      if (!resizeEl.className.includes("info")) {
+        startCoords =
+          e.clientX - (e.clientX - resizeEl.getBoundingClientRect().x);
+      } else {
+        startCoords =
+          e.clientY - (e.clientY - resizeEl.getBoundingClientRect().y);
+      }
+      this.resize = {
+        resizeEl,
+        elementToRz,
+        startCoords,
+      };
+      this.onMousemove = this.onMousemove.bind(this);
+      this.componentElement.addListener("mousemove", this.onMousemove);
+    }
+  }
+
+  onMousemove(e) {
+    e.preventDefault();
+    if (!this.resize.resizeEl.className.includes("info")) {
+      this.resize.newCoords = this.resize.startCoords - e.clientX;
+      this.resize.resizeEl.style = `right: ${this.resize.newCoords}px;`;
+    } else {
+      this.resize.newCoords = this.resize.startCoords - e.clientY;
+      this.resize.resizeEl.style = `bottom: ${this.resize.newCoords}px;`;
+    }
+  }
+
+  onMouseup() {
+    if (this.resize) {
+      this.resize.resizeEl.style = ``;
+      if (!this.resize.resizeEl.className.includes("info")) {
+        this.resize.elementToRz.style = `width: ${
+          this.resize.elementToRz.offsetWidth - this.resize.newCoords
+        }px`;
+      } else {
+        this.resize.elementToRz.style = `height: ${
+          this.resize.elementToRz.offsetHeight - this.resize.newCoords
+        }px`;
+      }
+      this.resize = null;
+      this.componentElement.removeListener("mousemove", this.onMousemove);
+    }
+  }
+
   returnHTML() {
     return `<table class="table">
               <tr class="table__row">
@@ -22,7 +80,8 @@ export default class Table extends ExcelComponent {
   }
 
   createHeader(name) {
-    return `<th class="table__column table__column--header">${name}</th>`;
+    return `<th class="table__column table__column--header">${name}
+                <div class="table__resize-el"></div></th>`;
   }
 
   createHeaders() {
@@ -41,15 +100,16 @@ export default class Table extends ExcelComponent {
 
   createRow(number) {
     return `<tr class="table__row">
-            <td class="table__column table__column--info">${number}</td>
+            <td class="table__column table__column--info">${number}
+            <div class="table__resize-el table__resize-el--info"></div></td>
             ${this.createColumns()}
             </tr>`;
   }
 
   createRows(qnty) {
-    let html = '';
+    let html = "";
     for (let i = 1; i <= qnty; i++) {
-      html+=this.createRow(i);
+      html += this.createRow(i);
     }
     return html;
   }

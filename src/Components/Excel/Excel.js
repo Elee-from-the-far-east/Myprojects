@@ -11,7 +11,6 @@ export default class Excel {
     this.components= this.components.map(Component=>{
       const componentElement = new DOMElement(Component.tagName, Component.className);
       const component = new Component(componentElement);
-      component.name ? window[component.name] = component: null;
       componentElement.setHTML(component.returnHTML());
       rootElement.append(componentElement.get());
       return component

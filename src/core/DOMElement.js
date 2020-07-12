@@ -6,8 +6,8 @@ export default class DOMElement {
     this.element.className = classNames;
   }
 
-  setHTML(html) {
-    this.element.innerHTML = html;
+  setHTML(html, where='beforeend') {
+    this.element.insertAdjacentHTML(where, html);
   }
 
   clearHTML() {
@@ -21,6 +21,10 @@ export default class DOMElement {
   append(node){
     this.element.appendChild(node)
   }
+  
+  appendTo(node){
+    node.appendChild(this.element)
+  }
 
   addListener(type, callback) {
     this.element.addEventListener(type, callback)
@@ -28,5 +32,9 @@ export default class DOMElement {
   
   removeListener(type,callback){
     this.element.removeEventListener(type,callback)
+  }
+  
+  css(styles=[]){
+    this.element.style = styles.join(';');
   }
 }
