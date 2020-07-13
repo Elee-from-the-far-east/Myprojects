@@ -25,6 +25,10 @@ export default class DOMElement {
   appendTo(node) {
     node.appendChild(this.element);
   }
+  
+  find(selector){
+    return this.element.querySelector(selector)
+  }
 
   addListener(type, callback) {
     this.element.addEventListener(type, callback);

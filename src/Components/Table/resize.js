@@ -1,52 +1,56 @@
-export const mouseDownHandler = (e, Table) => {
-  const resizeEl = e.target.closest(".table__resize-el");
+import Table from '@/Components/Table/Table';
+
+let MoveHandler;
+let UpHandler;
+export const resizeHandler = (e, instance) => {
+  const resizeEl = e.target.closest(Table.selectors.resizeEl);
   if (resizeEl) {
     e.preventDefault();
-    const elementToRz = resizeEl.closest(".table__column");
+    const elementToRz = resizeEl.closest(Table.selectors.tableColumn);
     const startCoords = resizeEl.getBoundingClientRect();
-    Table.resize = {
+    instance.resize = {
       resizeEl,
       elementToRz,
       startCoords,
     };
-    Table.onMousemove = Table.onMousemove.bind(Table);
-    Table.onMouseup = Table.onMouseup.bind(Table);
-    Table.componentElement.addListener("mousemove", Table.onMousemove);
-    Table.componentElement.addListener("mouseup", Table.onMouseup);
+    MoveHandler = mouseMoveHandler.bind(null,instance);
+    UpHandler = mouseUpHandler.bind(null,instance);
+    instance.componentElement.addListener("mousemove", MoveHandler);
+    instance.componentElement.addListener("mouseup", UpHandler);
   }
 };
 
-export const mouseMoveHandler = (e, Table) => {
+const mouseMoveHandler = (instance,e) => {
   e.preventDefault();
-  if (Table.resize.resizeEl.className.includes("col")) {
-    Table.resize.newCoords = Table.resize.startCoords.x - e.clientX;
-    Table.resize.resizeEl.style = `right: ${Table.resize.newCoords}px;`;
+  if (instance.resize.resizeEl.className.includes("col")) {
+    instance.resize.newCoords = instance.resize.startCoords.x - e.clientX;
+    instance.resize.resizeEl.style = `right: ${instance.resize.newCoords}px;`;
   } else {
-    Table.resize.newCoords = Table.resize.startCoords.y - e.clientY;
-    Table.resize.resizeEl.style = `bottom: ${Table.resize.newCoords}px;`;
+    instance.resize.newCoords = instance.resize.startCoords.y - e.clientY;
+    instance.resize.resizeEl.style = `bottom: ${instance.resize.newCoords}px;`;
   }
 };
 
-export const mouseUpHandler = (Table) => {
-  if (Table.resize) {
-    Table.resize.resizeEl.style = ``;
+const mouseUpHandler = (instance) => {
+  if (instance.resize) {
+    instance.resize.resizeEl.style = ``;
     if (
-      Table.resize.resizeEl.className.includes("col") &&
-      Table.resize.newCoords
+      instance.resize.resizeEl.className.includes("col") &&
+      instance.resize.newCoords
     ) {
-      Table.resize.elementToRz.style = `width: ${
-        Table.resize.elementToRz.offsetWidth - Table.resize.newCoords
+      instance.resize.elementToRz.style = `width: ${
+        instance.resize.elementToRz.offsetWidth - instance.resize.newCoords
       }px`;
     } else if (
-      !Table.resize.resizeEl.className.includes("col") &&
-      Table.resize.newCoords
+      !instance.resize.resizeEl.className.includes("col") &&
+      instance.resize.newCoords
     ) {
-      Table.resize.elementToRz.style = `height: ${
-        Table.resize.elementToRz.offsetHeight - Table.resize.newCoords
+      instance.resize.elementToRz.style = `height: ${
+        instance.resize.elementToRz.offsetHeight - instance.resize.newCoords
       }px`;
     }
-    Table.resize = null;
-    Table.componentElement.removeListener("mousemove", Table.onMousemove);
-    Table.componentElement.removeListener("mouseup", Table.onMouseup);
+    instance.resize = null;
+    instance.componentElement.removeListener("mousemove", MoveHandler);
+    instance.componentElement.removeListener("mouseup", UpHandler);
   }
 };

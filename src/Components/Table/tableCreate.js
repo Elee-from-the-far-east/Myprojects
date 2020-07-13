@@ -24,12 +24,18 @@ const createHeaders = () => {
   return headers.join("");
 };
 
-const createColumn = () => {
-  return `<td class="table__column" contenteditable></td>`;
+const createColumn = (row) => {
+  return function (_, index) {
+    return `<td class="table__column"
+        contenteditable
+        data-col="${index + 1}"
+        data-row="${row}"
+        ></td>`;
+  };
 };
 
-const createColumns = () => {
-  const cols = columnNames.map(createColumn);
+const createColumns = (number) => {
+  const cols = columnNames.map(createColumn(number));
   return cols.join("");
 };
 
@@ -37,7 +43,7 @@ const createRow = (number) => {
   return `<tr class="table__row">
             <td class="table__column table__column--info">${number}
             <div class="table__resize-el table__resize-el--row"></div></td>
-            ${createColumns()}
+            ${createColumns(number)}
             </tr>`;
 };
 

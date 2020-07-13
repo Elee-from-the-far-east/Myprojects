@@ -8,15 +8,21 @@
 }
 
 .table__column {
+  position: relative;
   width: $default-cell-width;
   padding: 5px 10px;
   white-space: nowrap;
   text-align: center;
   border: 1px solid $border-color;
 
-  &:focus {
-    outline-color: $button-color;
+  outline:none;
+
+  &--selected{
+    box-shadow: 0 0 0 3px $button-color;
+    border-radius: 10px;
+
   }
+
 
   &--header {
     position: relative;

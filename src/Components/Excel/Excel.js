@@ -1,4 +1,6 @@
 import DOMElement from "@core/DOMElement";
+import Table from '@/Components/Table/Table';
+
 
 export default class Excel {
   constructor(selector, { components }) {
@@ -24,5 +26,7 @@ export default class Excel {
   render() {
     this.$el.append(this.getRootElement());
     this.components.forEach((component) => component.addDOMListeners());
+    const i = this.components.find(el=>el.constructor===Table);
+    i.init()
   }
 }
