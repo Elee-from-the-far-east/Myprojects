@@ -14,7 +14,7 @@ export default class Table extends ExcelComponent {
   constructor(componentElement) {
     super(componentElement, {
       name: "Table",
-      listeners: ["mousedown", "mouseup"],
+      listeners: ["mousedown"],
     });
   }
 
@@ -24,7 +24,7 @@ export default class Table extends ExcelComponent {
     if (resizeEl) {
       e.preventDefault();
       const elementToRz = resizeEl.closest(".table__column");
-      if (!resizeEl.className.includes("info")) {
+      if (resizeEl.className.includes("col")) {
         startCoords =
           e.clientX - (e.clientX - resizeEl.getBoundingClientRect().x);
       } else {
@@ -37,13 +37,15 @@ export default class Table extends ExcelComponent {
         startCoords,
       };
       this.onMousemove = this.onMousemove.bind(this);
+      this.onMouseup = this.onMouseup.bind(this);
       this.componentElement.addListener("mousemove", this.onMousemove);
+      this.componentElement.addListener("mouseup", this.onMouseup);
     }
   }
 
   onMousemove(e) {
     e.preventDefault();
-    if (!this.resize.resizeEl.className.includes("info")) {
+    if (this.resize.resizeEl.className.includes("col")) {
       this.resize.newCoords = this.resize.startCoords - e.clientX;
       this.resize.resizeEl.style = `right: ${this.resize.newCoords}px;`;
     } else {
@@ -55,7 +57,7 @@ export default class Table extends ExcelComponent {
   onMouseup() {
     if (this.resize) {
       this.resize.resizeEl.style = ``;
-      if (!this.resize.resizeEl.className.includes("info")) {
+      if (this.resize.resizeEl.className.includes('col')) {
         this.resize.elementToRz.style = `width: ${
           this.resize.elementToRz.offsetWidth - this.resize.newCoords
         }px`;
@@ -66,6 +68,7 @@ export default class Table extends ExcelComponent {
       }
       this.resize = null;
       this.componentElement.removeListener("mousemove", this.onMousemove);
+      this.componentElement.removeListener("mouseup", this.onMouseup);
     }
   }
 
@@ -81,7 +84,7 @@ export default class Table extends ExcelComponent {
 
   createHeader(name) {
     return `<th class="table__column table__column--header">${name}
-                <div class="table__resize-el"></div></th>`;
+                <div class="table__resize-el table__resize-el--col"></div></th>`;
   }
 
   createHeaders() {
@@ -101,7 +104,7 @@ export default class Table extends ExcelComponent {
   createRow(number) {
     return `<tr class="table__row">
             <td class="table__column table__column--info">${number}
-            <div class="table__resize-el table__resize-el--info"></div></td>
+            <div class="table__resize-el table__resize-el--row"></div></td>
             ${this.createColumns()}
             </tr>`;
   }
