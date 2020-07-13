@@ -2,56 +2,45 @@ import Table from '@/Components/Table/Table';
 
 
 
-export const resizeHandler = (e, instance) => {
+export const resizeHandler = (e) => {
   const resizeEl = e.target.closest(Table.selectors.resizeEl);
   if (resizeEl) {
     e.preventDefault();
     const elementToRz = resizeEl.closest(Table.selectors.tableColumn);
     const startCoords = resizeEl.getBoundingClientRect();
-    let resizeData = {
-      resizeEl,
-      elementToRz,
-      startCoords,
-    };
-
-  
-    const mouseMoveHandler = (e) => {
+    let newCoords;
+    
+    document.onmousemove = (e) => {
       e.preventDefault();
-      if (resizeData.resizeEl.className.includes("col")) {
-        resizeData.newCoords = resizeData.startCoords.x - e.clientX;
-        resizeData.resizeEl.style = `right: ${resizeData.newCoords}px;`;
+      if (resizeEl.className.includes("col")) {
+        newCoords = startCoords.x - e.clientX;
+        resizeEl.style = `right: ${ newCoords }px;`;
       } else {
-        resizeData.newCoords = resizeData.startCoords.y - e.clientY;
-        resizeData.resizeEl.style = `bottom: ${resizeData.newCoords}px;`;
+        newCoords = startCoords.y - e.clientY;
+        resizeEl.style = `bottom: ${ newCoords }px;`;
       }
     };
-  
-    const mouseUpHandler = () => {
-      if (resizeData) {
-        resizeData.resizeEl.style = ``;
-        if (
-            resizeData.resizeEl.className.includes("col") &&
-            resizeData.newCoords
-        ) {
-          resizeData.elementToRz.style = `width: ${
-              resizeData.elementToRz.offsetWidth - resizeData.newCoords
-          }px`;
-        } else if (
-            !resizeData.resizeEl.className.includes("col") &&
-            resizeData.newCoords
-        ) {
-          resizeData.elementToRz.style = `height: ${
-              resizeData.elementToRz.offsetHeight - resizeData.newCoords
-          }px`;
-        }
-        resizeData = null;
-        instance.componentElement.removeListener("mousemove", mouseMoveHandler);
-        instance.componentElement.removeListener("mouseup", mouseUpHandler);
+    
+    document.onmouseup = () => {
+      resizeEl.style = ``;
+      if (
+          resizeEl.className.includes("col") &&
+          newCoords
+      ) {
+        elementToRz.style = `width: ${
+            elementToRz.offsetWidth - newCoords
+        }px`;
+      } else if (
+          !resizeEl.className.includes("col") &&
+          newCoords
+      ) {
+        elementToRz.style = `height: ${
+            elementToRz.offsetHeight - newCoords
+        }px`;
       }
-    };
-    instance.componentElement.addListener("mousemove", mouseMoveHandler);
-    instance.componentElement.addListener("mouseup", mouseUpHandler);
+      document.onmousemove = null;
+      document.onmouseup = null;
+    }
   }
 };
-
 
