@@ -49,8 +49,8 @@ export default class Table extends ExcelComponent {
   
   getCellInfo(element) {
     return {
-      col: element.dataset.col,
-      row: element.dataset.row
+      col: +element.dataset.col,
+      row: +element.dataset.row
     }
   }
   getCellsRange(start,end){
