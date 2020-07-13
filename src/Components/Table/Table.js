@@ -20,17 +20,10 @@ export default class Table extends ExcelComponent {
 
   onMousedown(e) {
     const resizeEl = e.target.closest(".table__resize-el");
-    let startCoords;
     if (resizeEl) {
       e.preventDefault();
       const elementToRz = resizeEl.closest(".table__column");
-      if (resizeEl.className.includes("col")) {
-        startCoords =
-          e.clientX - (e.clientX - resizeEl.getBoundingClientRect().x);
-      } else {
-        startCoords =
-          e.clientY - (e.clientY - resizeEl.getBoundingClientRect().y);
-      }
+      const startCoords = resizeEl.getBoundingClientRect();
       this.resize = {
         resizeEl,
         elementToRz,
@@ -46,10 +39,10 @@ export default class Table extends ExcelComponent {
   onMousemove(e) {
     e.preventDefault();
     if (this.resize.resizeEl.className.includes("col")) {
-      this.resize.newCoords = this.resize.startCoords - e.clientX;
+      this.resize.newCoords = this.resize.startCoords.x - e.clientX;
       this.resize.resizeEl.style = `right: ${this.resize.newCoords}px;`;
     } else {
-      this.resize.newCoords = this.resize.startCoords - e.clientY;
+      this.resize.newCoords = this.resize.startCoords.y - e.clientY;
       this.resize.resizeEl.style = `bottom: ${this.resize.newCoords}px;`;
     }
   }
@@ -57,11 +50,17 @@ export default class Table extends ExcelComponent {
   onMouseup() {
     if (this.resize) {
       this.resize.resizeEl.style = ``;
-      if (this.resize.resizeEl.className.includes('col')) {
+      if (
+        this.resize.resizeEl.className.includes("col") &&
+        this.resize.newCoords
+      ) {
         this.resize.elementToRz.style = `width: ${
           this.resize.elementToRz.offsetWidth - this.resize.newCoords
         }px`;
-      } else {
+      } else if (
+        !this.resize.resizeEl.className.includes("col") &&
+        this.resize.newCoords
+      ) {
         this.resize.elementToRz.style = `height: ${
           this.resize.elementToRz.offsetHeight - this.resize.newCoords
         }px`;
