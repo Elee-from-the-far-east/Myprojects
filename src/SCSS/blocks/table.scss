@@ -5,11 +5,7 @@
   width: 1px;
   table-layout: fixed;
   border-collapse: collapse;
-
-
 }
-
-
 
 .table__column {
   width: $default-cell-width;
@@ -56,31 +52,35 @@
     opacity: 1;
   }
 
-  &--col{
+  &--col {
     top: 0;
     right: -3px;
     bottom: 0;
     width: 3px;
-    &:hover{
+
+    &:hover {
       cursor: col-resize;
     }
-    &:active{
-      opacity: 1;
+
+    &:active {
       height: 100vw;
+      opacity: 1;
     }
   }
 
-  &--row{
+  &--row {
     right: 0;
-    left: 0;
     bottom: 0;
+    left: 0;
     height: 3px;
+
     &:hover {
       cursor: row-resize;
     }
-    &:active{
-      opacity: 1;
+
+    &:active {
       width: 100vw;
+      opacity: 1;
     }
   }
 }

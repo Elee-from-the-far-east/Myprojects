@@ -3,12 +3,12 @@
 @mixin set-color($color: green) {
   color: $color;
 }
-@mixin set-indents($padding:0,$margin:0) {
+@mixin set-indents($padding: 0, $margin: 0) {
   margin: $margin + px;
   padding: $padding + px;
 }
 
-@mixin pos-absolute ($top:0) {
+@mixin pos-absolute($top: 0) {
   position: absolute;
   top: $top;
   right: 0;
@@ -17,14 +17,13 @@
 
 @mixin default-flex() {
   display: flex;
-
 }
 
-@mixin set-border-bottom($px, $color:$border-color) {
+@mixin set-border-bottom($px, $color: $border-color) {
   border-bottom: $px + px solid $color;
 }
 
-@mixin clear-list () {
+@mixin clear-list() {
   margin: 0;
   padding: 0;
   list-style: none;

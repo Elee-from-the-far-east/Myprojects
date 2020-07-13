@@ -1,13 +1,13 @@
-import ExcelComponent from '@core/ExcelComponent';
+import ExcelComponent from "@core/ExcelComponent";
 
 export default class Toolbar extends ExcelComponent {
-  static tagName = 'section';
-  static className = 'toolbar excel__toolbar';
-  constructor($el){
-    super($el,{
-      name: 'Toolbar',
-      listeners:[]
-    })
+  static tagName = "section";
+  static className = "toolbar excel__toolbar";
+  constructor($el) {
+    super($el, {
+      name: "Toolbar",
+      listeners: [],
+    });
   }
   returnHTML() {
     return `<button class="toolbar__button btn">
@@ -35,6 +35,6 @@ export default class Toolbar extends ExcelComponent {
             format_italic
           </span>
         </button>
-      </section>`
+      </section>`;
   }
 }

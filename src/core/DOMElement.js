@@ -6,7 +6,7 @@ export default class DOMElement {
     this.element.className = classNames;
   }
 
-  setHTML(html, where='beforeend') {
+  setHTML(html, where = "beforeend") {
     this.element.insertAdjacentHTML(where, html);
   }
 
@@ -17,24 +17,24 @@ export default class DOMElement {
   get() {
     return this.element;
   }
-  
-  append(node){
-    this.element.appendChild(node)
+
+  append(node) {
+    this.element.appendChild(node);
   }
-  
-  appendTo(node){
-    node.appendChild(this.element)
+
+  appendTo(node) {
+    node.appendChild(this.element);
   }
 
   addListener(type, callback) {
-    this.element.addEventListener(type, callback)
+    this.element.addEventListener(type, callback);
   }
-  
-  removeListener(type,callback){
-    this.element.removeEventListener(type,callback)
+
+  removeListener(type, callback) {
+    this.element.removeEventListener(type, callback);
   }
-  
-  css(styles=[]){
-    this.element.style = styles.join(';');
+
+  css(styles = []) {
+    this.element.style = styles.join(";");
   }
 }

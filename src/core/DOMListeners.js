@@ -11,10 +11,11 @@ export default class DOMListeners {
   addDOMListeners() {
     this.listeners.forEach((listener) => {
       const callbackName = getCBName(listener);
-      if (!this[callbackName])
+      if (!this[callbackName]) {
         throw new Error(
-          `there is no ${callbackName} callback for the ${listener} listener, component: ${this['name']}`
+          `there is no ${callbackName} callback for the ${listener} listener, component: ${this["name"]}`
         );
+      }
       this[callbackName] = this[callbackName].bind(this);
       this.componentElement.addListener(listener, this[callbackName]);
     });
@@ -29,5 +30,5 @@ export default class DOMListeners {
 }
 
 function getCBName(listener) {
-    return "on" + makeFirstLetterUp(listener)
+  return "on" + makeFirstLetterUp(listener);
 }

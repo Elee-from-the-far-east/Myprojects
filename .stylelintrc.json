@@ -21,6 +21,7 @@
     },
     "selector-class-pattern": null,
     "order/properties-alphabetical-order": null,
+    "max-nesting-depth": 2,
     "string-quotes": "double"
   }
 }
