@@ -4,29 +4,29 @@ import Table from '@/Components/Table/Table';
 
 export default class Excel {
   constructor(selector, { components }) {
-    this.$el = document.querySelector(selector);
+    this.element = document.querySelector(selector);
     this.components = components || [];
   }
 
   getRootElement() {
-    const rootElement = new DOMElement("div", "excel");
+    const root = new DOMElement("div", "excel");
     this.components = this.components.map((Component) => {
-      const componentElement = new DOMElement(
+      const rootElement = new DOMElement(
         Component.tagName,
         Component.className
       );
-      const component = new Component(componentElement);
-      componentElement.setHTML(component.returnHTML());
-      rootElement.append(componentElement.get());
+      const component = new Component(rootElement);
+      rootElement.setHTML(component.returnHTML());
+      root.append(rootElement.get());
       return component;
     });
-    return rootElement.get();
+    return root.get();
   }
 
   render() {
-    this.$el.append(this.getRootElement());
+    this.element.append(this.getRootElement());
     this.components.forEach((component) => component.addDOMListeners());
-    const i = this.components.find(el=>el.constructor===Table);
-    i.init()
+    this.components.find(el=>el.constructor===Table).init();
+    
   }
 }

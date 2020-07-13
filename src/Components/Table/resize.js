@@ -2,9 +2,8 @@ import Table from '@/Components/Table/Table';
 
 
 
-export const resizeHandler = (e) => {
+export const resize = (e) => {
   const resizeEl = e.target.closest(Table.selectors.resizeEl);
-  if (resizeEl) {
     e.preventDefault();
     const elementToRz = resizeEl.closest(Table.selectors.tableColumn);
     const startCoords = resizeEl.getBoundingClientRect();
@@ -41,6 +40,5 @@ export const resizeHandler = (e) => {
       document.onmousemove = null;
       document.onmouseup = null;
     }
-  }
 };
 

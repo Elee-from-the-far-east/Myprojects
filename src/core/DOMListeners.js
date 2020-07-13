@@ -1,11 +1,11 @@
 import { makeFirstLetterUp } from "@core/utils";
 
 export default class DOMListeners {
-  constructor(componentElement, listeners = []) {
-    if (!componentElement) {
+  constructor(rootElement, listeners = []) {
+    if (!rootElement) {
       throw new Error(`No element for DOMListener was provided`);
     }
-    this.componentElement = componentElement;
+    this.rootElement = rootElement;
     this.listeners = listeners;
   }
   addDOMListeners() {
@@ -17,14 +17,14 @@ export default class DOMListeners {
         );
       }
       this[callbackName] = this[callbackName].bind(this);
-      this.componentElement.addListener(listener, this[callbackName]);
+      this.rootElement.addListener(listener, this[callbackName]);
     });
   }
 
   removeDOMListeners() {
     this.listeners.forEach((listener) => {
       const callbackName = getCBName(listener);
-      this.componentElement.removeListener(listener, this[callbackName]);
+      this.rootElement.removeListener(listener, this[callbackName]);
     });
   }
 }

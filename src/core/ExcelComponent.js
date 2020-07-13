@@ -1,8 +1,8 @@
 import DOMListeners from "@core/DOMListeners";
 
 export default class ExcelComponent extends DOMListeners {
-  constructor($el, { listeners, name } = {}) {
-    super($el, listeners);
+  constructor(rootElement, { listeners, name } = {}) {
+    super(rootElement, listeners);
     this.name = name;
   }
 
