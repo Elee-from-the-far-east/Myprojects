@@ -10,6 +10,7 @@ export class Selection {
     this.clear();
     this.selected.push(element);
     this.previous = element;
+    element.focus();
     element.classList.add(Table.classes.selected);
     
   }
@@ -19,10 +20,14 @@ export class Selection {
     this.selected = [];
   }
   
+  clearFocus(){
+    this.selected.forEach(el=>el.blur())
+  }
+  
  
-  selectgroup(selectors, root) {
+  selectGroup(elements) {
     this.clear();
-    this.selected=selectors.map(selector=>root.find(selector));
+    this.selected=elements;
     this.selected.forEach(el=>el.classList.add(Table.classes.selected));
    
   }
