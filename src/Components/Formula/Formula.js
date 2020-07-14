@@ -1,19 +1,28 @@
 import ExcelComponent from "@core/ExcelComponent";
+import {isEnterKeyCode} from '@/Components/Table/conditionHelpers';
 
 export default class Formula extends ExcelComponent {
   static tagName = "section";
   static className = "formula excel__formula";
 
-  constructor($el) {
-    super($el, {
+  constructor(rootElement, options) {
+    super(rootElement, {
       name: "Formula",
-      listeners: ["input"],
+      listeners: ["input", 'keydown'],
+      ...options
     });
   }
 
   onInput(e) {
-    console.log(e);
-    console.log(this);
+    const text = this.rootElement.find('.formula__content').textContent;
+    this.observer.trigger("formula-input", text)
+  }
+  
+  onKeydown(e){
+    if(isEnterKeyCode(e)){
+   
+      this.observer.trigger('formula-enter-pressed', e)
+    }
   }
 
   returnHTML() {

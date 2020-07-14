@@ -4,10 +4,10 @@ import { resize } from "@/Components/Table/resize";
 import { createTable } from "@/Components/Table/tableCreate";
 import { Selection } from "@/Components/Table/Selection";
 import {
-  isCell,
-  isKeyCode,
+  isCell, isEscKeyCode,
+  isMoveKeyCode,
   isResize,
-} from "@/Components/Table/conditionHelpers";
+} from '@/Components/Table/conditionHelpers';
 
 export default class Table extends ExcelComponent {
   static tagName = "section";
@@ -23,9 +23,9 @@ export default class Table extends ExcelComponent {
     selected: "table__column--selected",
   };
   static setDefaultTabListener () {
-    document.onkeydown = (ev) => {
-      if (ev.key === "Tab") {
-        ev.preventDefault();
+    document.onkeydown = (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
         this.selection.select(
           this.rootElement.find(Table.selectors.defaultCell)
         );
@@ -33,16 +33,23 @@ export default class Table extends ExcelComponent {
     };
   };
 
-  constructor(rootElement) {
+  constructor(rootElement, options) {
     super(rootElement, {
       name: "Table",
       listeners: ["mousedown", "keydown"],
+      ...options
     });
   }
 
   init() {
     this.selection = new Selection();
-    this.selection.select(this.rootElement.find(Table.selectors.defaultCell));
+    this.defaultCell = this.rootElement.find(Table.selectors.defaultCell);
+    this.selection.select(this.defaultCell);
+    this.observer.add("formula-input",this.setTextToCell.bind(this));
+    this.observer.add('formula-enter-pressed', (e)=> {
+      e.preventDefault();
+      this.selection.previous.focus();
+    });
     Table.setDefaultTabListener.call(this);
   }
 
@@ -60,21 +67,25 @@ export default class Table extends ExcelComponent {
   }
 
   onKeydown(e) {
-    if (isKeyCode(e)) {
+    if (isMoveKeyCode(e)) {
       e.preventDefault();
       document.onkeydown = null;
       const cell = this.rootElement.find(this.getNextCell(e));
       this.selection.select(cell);
-    } else if (e.key === "Escape") {
-      this.selection.select(this.rootElement.find(Table.selectors.defaultCell));
-      this.selection.clearFocus();
+    } else if (isEscKeyCode(e)) {
+      this.selection.select(this.defaultCell);
       this.selection.clear();
+      document.activeElement.blur();
       Table.setDefaultTabListener.call(this);
     }
   }
 
   returnHTML() {
     return createTable(20);
+  }
+  
+  setTextToCell(text){
+    this.selection.previous.textContent = text;
   }
 
   getCellInfo(element) {

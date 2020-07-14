@@ -20,15 +20,12 @@ export class Selection {
     this.selected = [];
   }
   
-  clearFocus(){
-    this.selected.forEach(el=>el.blur())
-  }
   
  
   selectGroup(elements) {
     this.clear();
     this.selected=elements;
     this.selected.forEach(el=>el.classList.add(Table.classes.selected));
-   
   }
+  
 }

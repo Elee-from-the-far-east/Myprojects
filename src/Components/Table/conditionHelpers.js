@@ -8,7 +8,15 @@ export function isCell(e) {
   return e.target.dataset.col;
 }
 
-export function isKeyCode(e) {
+export function isMoveKeyCode(e) {
   const keys = ["Tab", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
   return keys.includes(e.key)
+}
+
+export function isEscKeyCode(e) {
+  return e.key === "Escape"
+}
+
+export function isEnterKeyCode(e) {
+  return e.key === 'Enter'
 }
