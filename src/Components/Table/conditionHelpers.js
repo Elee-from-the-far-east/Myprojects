@@ -17,6 +17,6 @@ export function isEscKeyCode(e) {
   return e.key === "Escape"
 }
 
-export function isEnterKeyCode(e) {
-  return e.key === 'Enter'
+export function shouldSwitchToTable(e) {
+  return e.key === 'Enter'||e.key === 'Tab'
 }

@@ -3,3 +3,8 @@ export const makeFirstLetterUp = (string) => {
   return string.replace(firstLetter, firstLetter.toUpperCase());
 };
 
+export function storage(key, data) {
+  if(data)localStorage.setItem(key,JSON.stringify(data));
+  else return JSON.parse(localStorage.getItem(key))
+}
+

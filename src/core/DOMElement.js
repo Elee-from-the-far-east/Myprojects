@@ -29,6 +29,10 @@ export default class DOMElement {
   find(selector){
     return this.element.querySelector(selector)
   }
+  
+  findAll(selector){
+    return this.element.querySelectorAll(selector)
+  }
 
   addListener(type, callback) {
     this.element.addEventListener(type, callback);

@@ -1,5 +1,5 @@
 import ExcelComponent from "@core/ExcelComponent";
-import {isEnterKeyCode} from '@/Components/Table/conditionHelpers';
+import { shouldSwitchToTable } from "@/Components/Table/conditionHelpers";
 
 export default class Formula extends ExcelComponent {
   static tagName = "section";
@@ -8,20 +8,32 @@ export default class Formula extends ExcelComponent {
   constructor(rootElement, options) {
     super(rootElement, {
       name: "Formula",
-      listeners: ["input", 'keydown'],
-      ...options
+      listeners: ["input", "keydown"],
+      ...options,
     });
   }
-
-  onInput(e) {
-    const text = this.rootElement.find('.formula__content').textContent;
-    this.observer.trigger("formula-input", text)
+  
+  init() {
+    super.init();
+    this.formulaText = this.rootElement.find(".formula__content");
+    this.observer.add('on-cell-switch', (text) => {
+          this.formulaText.textContent = text;
+          
+    });
+   this.subscribe((state) => {
+     this.formulaText.textContent = state.currentText;
+   })
+   
   }
   
-  onKeydown(e){
-    if(isEnterKeyCode(e)){
-   
-      this.observer.trigger('formula-enter-pressed', e)
+  onInput(e) {
+    this.observer.trigger("formula-input", this.formulaText.textContent);
+  }
+
+  onKeydown(e) {
+    if (shouldSwitchToTable(e)) {
+      e.preventDefault();
+      this.observer.trigger("formula-enter-pressed");
     }
   }
 

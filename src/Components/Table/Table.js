@@ -4,16 +4,21 @@ import { resize } from "@/Components/Table/resize";
 import { createTable } from "@/Components/Table/tableCreate";
 import { Selection } from "@/Components/Table/Selection";
 import {
-  isCell, isEscKeyCode,
+  isCell,
+  isEscKeyCode,
   isMoveKeyCode,
   isResize,
-} from '@/Components/Table/conditionHelpers';
+} from "@/Components/Table/conditionHelpers";
+import * as actions from "@/Redux/actions";
+import { getCellData } from "@/Redux/actions";
 
 export default class Table extends ExcelComponent {
   static tagName = "section";
   static className = "excel__table";
   static selectors = {
     tableColumn: ".table__column",
+    columnHeader: ".table__column--header",
+    rowHeader: ".table__column--info",
     tableRow: ".table__row",
     resizeEl: ".table__resize-el",
     defaultCell: '[data-col="1"][data-row="1"]',
@@ -22,7 +27,7 @@ export default class Table extends ExcelComponent {
   static classes = {
     selected: "table__column--selected",
   };
-  static setDefaultTabListener () {
+  static setDefaultTabListener() {
     document.onkeydown = (e) => {
       if (e.key === "Tab") {
         e.preventDefault();
@@ -31,30 +36,60 @@ export default class Table extends ExcelComponent {
         );
       }
     };
-  };
+  }
 
   constructor(rootElement, options) {
     super(rootElement, {
       name: "Table",
-      listeners: ["mousedown", "keydown"],
-      ...options
+      listeners: ["mousedown", "keydown", "input"],
+      ...options,
     });
   }
 
   init() {
+    super.init();
     this.selection = new Selection();
     this.defaultCell = this.rootElement.find(Table.selectors.defaultCell);
     this.selection.select(this.defaultCell);
-    this.observer.add("formula-input",this.setTextToCell.bind(this));
-    this.observer.add('formula-enter-pressed', (e)=> {
-      e.preventDefault();
+    this.restoreState();
+    this.observer.trigger("on-cell-switch", this.defaultCell.textContent);
+    this.observer.add("formula-input", (text)=>{
+      this.setTextToCell(text);
+      this.updateCellInfoInState(text)
+    });
+    this.observer.add("formula-enter-pressed", () => {
       this.selection.previous.focus();
     });
     Table.setDefaultTabListener.call(this);
   }
 
+  restoreState() {
+    const { columnState } = this.getState();
+    const elements = this.rootElement.findAll(
+      Table.selectors.columnHeader + "," + Table.selectors.rowHeader
+    );
+    elements.forEach((el) => {
+      const key = Object.keys(columnState).find(
+        (key) => key === el.textContent.trim()
+      );
+      if (key && !isNaN(+key)) el.style.height = columnState[key] + "px";
+      else if (key) el.style.width = columnState[key] + "px";
+    });
+  }
+
+  updateCellInfoInState(text) {
+    this.dispatch(
+      getCellData({
+        row: this.selection.previous.dataset.row,
+        col: this.selection.previous.dataset.col,
+        value: text,
+      })
+    );
+  }
+
   onMousedown(e) {
-    if (isResize(e)) resize(e);
+    if (isResize(e))
+      resize(e).then((data) => this.dispatch(actions.tableResize(data)));
     else if (isCell(e)) {
       if (!e.shiftKey) this.selection.select(e.target);
       else {
@@ -72,6 +107,7 @@ export default class Table extends ExcelComponent {
       document.onkeydown = null;
       const cell = this.rootElement.find(this.getNextCell(e));
       this.selection.select(cell);
+      this.observer.trigger("on-cell-switch", cell.textContent);
     } else if (isEscKeyCode(e)) {
       this.selection.select(this.defaultCell);
       this.selection.clear();
@@ -80,11 +116,16 @@ export default class Table extends ExcelComponent {
     }
   }
 
+  onInput(e) {
+    // if (isCell(e)) this.observer.trigger("on-cell-input", e.target.textContent);
+    if (isCell(e)) this.updateCellInfoInState(e.target.textContent);
+  }
+
   returnHTML() {
     return createTable(20);
   }
-  
-  setTextToCell(text){
+
+  setTextToCell(text) {
     this.selection.previous.textContent = text;
   }
 
