@@ -41,7 +41,7 @@ export default class Table extends ExcelComponent {
   constructor(rootElement, options) {
     super(rootElement, {
       name: "Table",
-      listeners: ["mousedown", "keydown", "input"],
+      listeners: ["mousedown", "keydown", "input", "click"],
       ...options,
     });
   }
@@ -59,21 +59,30 @@ export default class Table extends ExcelComponent {
     });
     this.observer.add("formula-enter-pressed", () => {
       this.selection.previous.focus();
+      this.observer.trigger('on-cell-switch', this.selection.previous.textContent)
     });
     Table.setDefaultTabListener.call(this);
   }
 
   restoreState() {
-    const { columnState } = this.getState();
+    const { columnState, cellData } = this.getState();
     const elements = this.rootElement.findAll(
-      Table.selectors.columnHeader + "," + Table.selectors.rowHeader
+      Table.selectors.tableColumn
     );
+    const columnStateKeys = Object.keys(columnState);
+    const cellDataKeys = Object.keys(cellData);
     elements.forEach((el) => {
-      const key = Object.keys(columnState).find(
+      const columnStateKey = columnStateKeys.find(
         (key) => key === el.textContent.trim()
       );
-      if (key && !isNaN(+key)) el.style.height = columnState[key] + "px";
-      else if (key) el.style.width = columnState[key] + "px";
+      if (columnStateKey && !isNaN(+columnStateKey)) el.style.height = columnState[columnStateKey] + "px";
+      else if (columnStateKey) el.style.width = columnState[columnStateKey] + "px";
+      const cellDataKey = cellDataKeys.find(key=>{
+        key=key.split(':');
+        return el.dataset.col === key[1] && el.dataset.row === key[0]
+          }
+      );
+      if(cellDataKey)el.textContent = cellData[cellDataKey]
     });
   }
 
@@ -119,6 +128,9 @@ export default class Table extends ExcelComponent {
   onInput(e) {
     // if (isCell(e)) this.observer.trigger("on-cell-input", e.target.textContent);
     if (isCell(e)) this.updateCellInfoInState(e.target.textContent);
+  }
+  onClick(e){
+    if(isCell(e))this.observer.trigger("on-cell-switch", e.target.textContent);
   }
 
   returnHTML() {

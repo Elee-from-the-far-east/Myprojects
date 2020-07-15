@@ -15,6 +15,9 @@ export default class Formula extends ExcelComponent {
   
   init() {
     super.init();
+    this.rootElement.find('.formula__content').addEventListener('blur', function(e) {
+      e.target.textContent = '';
+    });
     this.formulaText = this.rootElement.find(".formula__content");
     this.observer.add('on-cell-switch', (text) => {
           this.formulaText.textContent = text;
@@ -28,6 +31,11 @@ export default class Formula extends ExcelComponent {
   
   onInput(e) {
     this.observer.trigger("formula-input", this.formulaText.textContent);
+  }
+  
+  onBlur(e){
+  console.log(e)
+  
   }
 
   onKeydown(e) {
