@@ -1,11 +1,12 @@
 import DOMListeners from "@core/DOMListeners";
 
 export default class ExcelComponent extends DOMListeners {
-  constructor(rootElement, { listeners, name, observer, store } = {}) {
+  constructor(rootElement, { listeners, name, observer, store, subscribes } = {}) {
     super(rootElement, listeners);
     this.name = name;
     this.observer = observer;
     this.store = store;
+    this.subscribes =subscribes||[];
     this.unsubscribe = [];
   }
 
@@ -13,9 +14,6 @@ export default class ExcelComponent extends DOMListeners {
     return ``;
   }
   
-  subscribe (fn){
-    this.unsubscribe.push(this.store.subscribe(fn));
-  }
   
   dispatch(action){
     this.store.dispatch(action);
@@ -25,7 +23,14 @@ export default class ExcelComponent extends DOMListeners {
     return this.store.getState();
   }
   
+  getChanges(){
+  }
+  
   init(){
     this.addDOMListeners();
+  }
+  
+  removeAll(){
+    this.removeDOMListeners()
   }
 }

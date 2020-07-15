@@ -1,5 +1,6 @@
 import DOMElement from "@core/DOMElement";
 import Observer from "@core/Observer";
+import StoreSubscriber from '@core/StoreSubsriber';
 
 export default class Excel {
   constructor(selector, { components, store }) {
@@ -7,9 +8,10 @@ export default class Excel {
     this.components = components || [];
     this.observer = new Observer();
     this.store = store;
+    this.storeSubscriber = new StoreSubscriber(this.store);
     this.componentsOptions = {
       observer: this.observer,
-      store: this.store
+      store: this.store,
     };
   }
 
@@ -31,5 +33,7 @@ export default class Excel {
   render() {
     this.element.append(this.getRootElement());
     this.components.forEach((component) => component.init());
-  }
+    this.storeSubscriber.storeSubscribe(this.components);
+      }
+      
 }

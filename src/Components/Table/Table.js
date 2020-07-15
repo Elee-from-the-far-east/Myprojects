@@ -42,6 +42,7 @@ export default class Table extends ExcelComponent {
     super(rootElement, {
       name: "Table",
       listeners: ["mousedown", "keydown", "input", "click"],
+      subscribes:[],
       ...options,
     });
   }
@@ -63,7 +64,11 @@ export default class Table extends ExcelComponent {
     });
     Table.setDefaultTabListener.call(this);
   }
-
+  
+  getChanges(state) {
+  
+  }
+  
   restoreState() {
     const { columnState, cellData } = this.getState();
     const elements = this.rootElement.findAll(
@@ -100,7 +105,9 @@ export default class Table extends ExcelComponent {
     if (isResize(e))
       resize(e).then((data) => this.dispatch(actions.tableResize(data)));
     else if (isCell(e)) {
-      if (!e.shiftKey) this.selection.select(e.target);
+      if (!e.shiftKey) {
+        this.selection.select(e.target);
+      }
       else {
         const cells = this.getSelectedCellsSelectors(e).map((selector) =>
           this.rootElement.find(selector)
