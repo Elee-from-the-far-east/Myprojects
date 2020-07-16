@@ -1,6 +1,6 @@
 import ExcelComponent from "@core/ExcelComponent";
 import { shouldSwitchToTable } from "@/Components/Table/conditionHelpers";
-const html = html``;
+
 export default class Formula extends ExcelComponent {
     static tagName = "section";
     static className = "formula excel__formula";
@@ -41,13 +41,17 @@ export default class Formula extends ExcelComponent {
     getChanges(changes) {
         if (changes.currentText) {
             this.formulaText.textContent = changes.currentText;
+            
         }
     }
 
     returnHTML() {
-        return html`<p class="formula__info">fx</p>
-            <div></div>
-            <div class></div>
-            <p contenteditable="true" spellcheck="false"></p>`;
+        return /* html*/ `<p class="formula__info">fx</p>
+            <p
+                class="formula__content"
+                contenteditable="true"
+                spellcheck="false"
+            ></p>`;
+
     }
 }
