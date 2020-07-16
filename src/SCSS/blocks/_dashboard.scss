@@ -1,29 +1,24 @@
 @import "../variables";
 @import "../mixins";
 
-.dashboard {
-}
-
-.dashboard__header {
-}
-
 .dashboard__new-table {
   display: flex;
   padding: 30px 100px;
+
   background-color: $default-info-cell-color;
 }
 
 .dashboard__crete-new-table {
   display: flex;
-  align-items: center;
   width: 150px;
   height: 150px;
-  color: inherit;
+
   font-size: 25px;
   text-align: center;
+  color: inherit;
   text-decoration: none;
+
   border: 2px solid $border-color;
-  border-radius: 5px;
 
   &:hover {
     color: $border-color;
@@ -31,6 +26,7 @@
 
   &:active {
     color: $button-color;
+
     border-color: $button-color;
   }
 }
@@ -42,8 +38,12 @@
 .dashboard__table {
   width: 100%;
   margin: 0 auto;
-  table-layout: fixed;
+
   border-collapse: collapse;
+  table-layout: fixed;
+
+  border: 1px solid black;
+  border-radius: 50%;
 }
 
 .dashboard__table-row {

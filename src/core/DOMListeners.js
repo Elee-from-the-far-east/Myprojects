@@ -1,9 +1,9 @@
 import { makeFirstLetterUp } from "@core/utils";
 
 export default class DOMListeners {
-  
-  
-  constructor(rootElement, listeners = []) {
+
+
+    constructor(rootElement, listeners = []) {
     if (!rootElement) {
       throw new Error(`No element for DOMListener was provided`);
     }
