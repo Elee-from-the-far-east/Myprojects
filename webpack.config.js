@@ -8,6 +8,7 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ImageminPlugin = require("imagemin-webpack-plugin").default;
+const imageminMozjpeg = require("imagemin-mozjpeg");
 const { path: PROJECT_ROOT } = require("app-root-path");
 const SOURCE_DIR = path.resolve(PROJECT_ROOT, "./src");
 const BUILD_DIR = path.resolve(PROJECT_ROOT, "./dist");
@@ -74,9 +75,12 @@ module.exports = {
         // }),
         new ImageminPlugin({
             test: /\.(jpe?g|png|gif|svg)$/i,
-            jpegtran: {
-                progressive: true,
-            },
+            plugins: [
+                imageminMozjpeg({
+                    quality: 75,
+                    progressive: true,
+                }),
+            ],
         }),
         new ExtractTextPlugin(filename("css", "min")),
         new OptimizeCSSAssetsPlugin({
@@ -149,7 +153,7 @@ module.exports = {
                 use: jsLoaders(),
             },
             {
-                test: /\.jpg$/i,
+                test: /\.(jpe?g|png|gif|svg)$/i,
                 use: [
                     {
                         loader: "file-loader",
