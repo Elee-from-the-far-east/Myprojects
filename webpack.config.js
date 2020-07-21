@@ -8,7 +8,10 @@ const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ImageminPlugin = require("imagemin-webpack-plugin").default;
+<<<<<<< HEAD
 const imageminMozjpeg = require("imagemin-mozjpeg");
+=======
+>>>>>>> f5adebee973dbcb130ecd04e1f40de2ad4b39cf3
 const { path: PROJECT_ROOT } = require("app-root-path");
 const SOURCE_DIR = path.resolve(PROJECT_ROOT, "./src");
 const BUILD_DIR = path.resolve(PROJECT_ROOT, "./dist");
@@ -42,6 +45,7 @@ const jsLoaders = () => {
 };
 
 module.exports = {
+<<<<<<< HEAD
   context: SOURCE_DIR,
   mode: "development",
   entry: ["./index.js"],
@@ -143,6 +147,7 @@ module.exports = {
           },
           { loader: "css-loader", options: { importLoaders: 1 } },
 
+<<<<<<< HEAD
           "postcss-loader",
           "sass-loader",
         ],
@@ -159,6 +164,27 @@ module.exports = {
             loader: "file-loader",
             options: {
               name: "[path][name].[ext]",
+=======
+                    "postcss-loader",
+                    "sass-loader",
+                ],
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: jsLoaders(),
+            },
+            {
+                test: /\.jpg$/i,
+                use: [
+                    {
+                        loader: "file-loader",
+                        options: {
+                            name: "[path][name].[ext]",
+                        },
+                    },
+                ],
+>>>>>>> f5adebee973dbcb130ecd04e1f40de2ad4b39cf3
             },
           },
         ],
