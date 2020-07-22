@@ -8,14 +8,13 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[1]||htmlWebpackPlugin.files.css[0] %>">
   <title><%= htmlWebpackPlugin.options.title %></title>
-
 </head>
+<%= require('html-loader!./SCSS/blocks/header/header.html') %>
 
 <body>
+  <%= require('html-loader!./SCSS/blocks/about-me/about-me.html') %>
 
 
-
-  <%= require('html-loader!./SCSS/blocks/header/header.html') %>
 
 
 

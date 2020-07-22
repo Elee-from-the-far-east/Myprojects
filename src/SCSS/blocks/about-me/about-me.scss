@@ -1,0 +1,122 @@
+.about-me {
+  padding-top: 235px;
+}
+
+.about-me__container {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-me__left-column {
+  display: flex;
+  width: 586px;
+}
+
+.about-me__work-img {
+  position: absolute;
+  top: -105px;
+
+  width: 375px;
+  height: 465px;
+}
+
+.about-me__decorative-item {
+  position: absolute;
+  bottom: 90px;
+  left: -35px;
+
+  transform: rotate(-90deg);
+
+  &::after {
+    display: inline-block;
+    width: 45px;
+    height: 1px;
+    margin-left: 5px;
+
+    vertical-align: middle;
+
+    border-bottom: 1px solid black;
+
+    content: "";
+  }
+}
+
+.about-me__my-img {
+  z-index: 1;
+
+  width: 375px;
+  height: 465px;
+  margin-left: auto;
+  margin-left: auto;
+}
+
+.about-me__right-column {
+  width: 586px;
+  padding-left: 50px;
+}
+
+.about-me__title {
+}
+
+.title {
+  margin-right: 35px;
+}
+
+.about-me__details {
+  margin-right: 35px;
+}
+
+.about-me__progress-bar {
+  position: relative;
+
+  width: 100%;
+  height: 2px;
+
+  background-color: darken($color: $lightbg, $amount: 5);
+
+  &::before {
+    position: absolute;
+    top: -3px;
+    left: -5px;
+    z-index: 5;
+
+    width: 10px;
+    height: 10px;
+
+    background-color: $darkbg;
+    border-radius: 50%;
+
+    content: "";
+  }
+
+  &::after {
+    position: absolute;
+
+    width: 100%;
+    height: 2px;
+
+    background-color: $darkbg;
+
+    content: "";
+  }
+
+  &:nth-of-type(3)::after {
+    width: 65%;
+  }
+
+  &:nth-of-type(5)::after {
+    width: 50%;
+  }
+}
+
+.about-me__progress-text-wrapper {
+}
+
+.about-me__progress-text {
+}
+
+.about-me__progress-value {
+}

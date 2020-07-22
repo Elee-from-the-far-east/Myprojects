@@ -144,7 +144,13 @@ module.exports = {
                     { loader: "css-loader", options: { importLoaders: 1 } },
 
                     "postcss-loader",
-                    "sass-loader",
+                    "resolve-url-loader",
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
                 ],
             },
             {

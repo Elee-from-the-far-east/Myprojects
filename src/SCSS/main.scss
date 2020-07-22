@@ -1,1 +1,48 @@
+@import "normalize.css";
+@import "./reuseables/mixins";
+@import "./reuseables/variables";
 @import "./blocks/header/header";
+@import "./blocks/about-me/about-me";
+
+a {
+  color: $darkbg;
+  text-decoration: none;
+}
+
+body,
+html {
+  height: 100vh;
+}
+
+body {
+  max-width: 1910px;
+  margin: 0;
+  padding: 0;
+
+  color: $darkbg;
+
+  font-weight: 400;
+  font-size: 16px;
+
+  font-family: "Roboto";
+  line-height: 24px;
+}
+
+.container {
+  width: 1170px;
+  margin: 0 auto;
+}
+
+.visually-hidden {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+
+  border: 0;
+
+  clip: rect(0 0 0 0);
+}
