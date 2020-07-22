@@ -1,3 +1,6 @@
+@import "../../reuseables/blocks/image";
+@import "../../reuseables/blocks/title";
+
 .about-me {
   padding-top: 235px;
 }
@@ -47,8 +50,6 @@
 .about-me__my-img {
   z-index: 1;
 
-  width: 375px;
-  height: 465px;
   margin-left: auto;
   margin-left: auto;
 }
@@ -59,10 +60,6 @@
 }
 
 .about-me__title {
-}
-
-.title {
-  margin-right: 35px;
 }
 
 .about-me__details {
