@@ -1,40 +1,63 @@
 .about-me {
-  padding-top: 235px;
+  background-color: white;
 }
 
-.about-me__container {
-  position: relative;
-
+.about-me__flex-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 235px;
 }
 
-.about-me__left-column {
-  display: flex;
-  width: 586px;
+.about-me__column {
+  flex: 0 1 50%;
+
+  &--right {
+    padding-left: 50px;
+  }
+}
+
+.about-me__image-container {
+  position: relative;
+
+  width: 375/585 * 100%;
+  margin-left: auto;
+
+  padding-bottom: 465/585 * 100%;
 }
 
 .about-me__work-img {
-  position: absolute;
-  top: -105px;
-
-  width: 375px;
-  height: 465px;
+  top: -105/465 * 100%;
+  left: -210/375 * 100%;
 }
 
 .about-me__decorative-item {
   position: absolute;
-  bottom: 90px;
-  left: -35px;
+  top: (311+95)/465 * 100%;
+  left: (-183-13)/375 * 100%;
+
+  margin: 0;
+  padding: 0;
+
+  font-weight: 500;
+  font-size: 100%;
+  letter-spacing: 1.6px;
 
   transform: rotate(-90deg);
+  transform-origin: 0 0;
+  @media (max-width: 992px) {
+    font-size: 50%;
+  }
+
+  @media (max-width: 767px) {
+    font-size: 25%;
+  }
 
   &::after {
     display: inline-block;
     width: 45px;
     height: 1px;
-    margin-left: 5px;
+    margin-left: 10px;
 
     vertical-align: middle;
 
@@ -45,15 +68,9 @@
 }
 
 .about-me__my-img {
+  top: 0;
+  right: 0;
   z-index: 1;
-
-  margin-left: auto;
-  margin-left: auto;
-}
-
-.about-me__right-column {
-  width: 586px;
-  padding-left: 50px;
 }
 
 .about-me__title {

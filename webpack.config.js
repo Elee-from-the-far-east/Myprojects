@@ -74,6 +74,7 @@ module.exports = {
         //     ],
         // }),
         new ImageminPlugin({
+            disable: isDev,
             test: /\.(jpe?g|png|gif|svg)$/i,
             plugins: [
                 imageminMozjpeg({
@@ -141,7 +142,10 @@ module.exports = {
                             reloadAll: true,
                         },
                     },
-                    { loader: "css-loader", options: { importLoaders: 1 } },
+                    {
+                        loader: "css-loader",
+                        options: { importLoaders: 1, sourceMap: true },
+                    },
 
                     "postcss-loader",
                     "resolve-url-loader",

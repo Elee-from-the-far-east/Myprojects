@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="<%= htmlWebpackPlugin.files.css[1]||htmlWebpackPlugin.files.css[0] %>"
+    />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport"
-    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[1]||htmlWebpackPlugin.files.css[0] %>">
-  <title><%= htmlWebpackPlugin.options.title %></title>
-</head>
-<%= require('html-loader!./SCSS/blocks/header/header.html') %>
-
-<body>
-  <%= require('html-loader!./SCSS/blocks/about-me/about-me.html') %>
-
-
-
-
-
-  <script src=" <%= htmlWebpackPlugin.files.js[1]||htmlWebpackPlugin.files.js[0] %>"></script>
-</body>
-
+  <body class="page">
+    <%= require('html-loader!./SCSS/blocks/header/header.html') %>
+    <main class="content">
+      <%= require('html-loader!./SCSS/blocks/about-me/about-me.html') %> <%=
+      require('html-loader!./SCSS/blocks/my-services/my-services.html') %>
+    </main>
+    <%= require('html-loader!./SCSS/blocks/footer/footer.html') %>
+    <script src=" <%= htmlWebpackPlugin.files.js[1]||htmlWebpackPlugin.files.js[0] %>"></script>
+  </body>
 </html>

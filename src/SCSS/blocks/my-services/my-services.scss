@@ -1,0 +1,95 @@
+.my-services {
+  padding-top: 128px;
+  padding-bottom: 113px;
+
+  background-color: $lightbg;
+}
+
+.my-services__title {
+  margin: 0 0 23px;
+
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 26px;
+  text-align: center;
+}
+
+.my-services__text {
+  margin: 0 0 66px;
+
+  color: #7f7f82;
+  font-weight: 400;
+  font-size: 16px;
+  font-family: Roboto;
+  line-height: 26px;
+  text-align: center;
+}
+
+.my-services__services-list {
+  @include reset-menu;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-right: -75px;
+}
+
+.my-services__list-item {
+  position: relative;
+
+  width: 27%;
+  margin-right: 75px;
+  margin-bottom: 50px;
+  padding-top: 69px;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 41px;
+    height: 37px;
+
+    background-image: url("../../../images/Forma 1.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    content: "";
+  }
+
+  &:nth-child(2)::before {
+    background-image: url("../../../images/Forma 1-1.png");
+  }
+
+  &:nth-child(3)::before {
+    background-image: url("../../../images/Forma\ 1-1-1.png");
+  }
+
+  &:nth-child(4)::before {
+    background-image: url("../../../images/Forma\ 1-2.png");
+  }
+
+  &:nth-child(5)::before {
+    background-image: url("../../../images/Forma_1.png");
+  }
+
+  &:nth-child(6)::before {
+    background-image: url("../../../images/L0001.png");
+  }
+}
+
+.my-services__list-item-title {
+  margin: 0 0 25px;
+}
+
+.my-services__list-item-text {
+  margin: 0;
+
+  color: #7f7f82;
+  font-weight: 400;
+  font-size: 14px;
+  font-family: Roboto;
+  line-height: 26px;
+}
+
+.my-services__list-item-link {
+}

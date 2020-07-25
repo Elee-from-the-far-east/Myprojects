@@ -4,3 +4,18 @@
 
   list-style: none;
 }
+
+@mixin border {
+  border: 1px solid red;
+}
+
+@mixin psedo-absolute($width, $height) {
+  position: absolute;
+  top: 0;
+
+  width: $width;
+  height: $height;
+  height: 0;
+
+  content: "";
+}

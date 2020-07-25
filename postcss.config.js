@@ -6,6 +6,7 @@ module.exports = ({ file, options, env }) => ({
                     "300": [],
                     "400": [],
                     "400 italic": [],
+                    "500": [],
                     "700": [],
                 },
             },

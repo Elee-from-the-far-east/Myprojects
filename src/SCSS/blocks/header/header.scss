@@ -1,20 +1,24 @@
 .main-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   box-sizing: border-box;
-  height: 100%;
-  padding: 35px 0;
 
   background-image: url("../../../images/headerbg.jpg");
   background-repeat: no-repeat;
 }
 
-.main-header__container {
+.main-header__flex-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  &--column {
+    flex-direction: column;
+    min-height: 960px;
+    padding: 35px 0;
+  }
+
+  &--top-row {
+    align-self: stretch;
+  }
 }
 
 .main-header__logo {
@@ -28,6 +32,8 @@
 .main-header__menu {
   @include reset-menu;
   display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
 }
 
 .main-header__menu-item {
@@ -48,8 +54,14 @@
 }
 
 .main-header__btn {
-  width: 30px;
+  position: relative;
+
+  display: block;
+
+  width: 26px;
   height: 45px;
+  padding: 0;
 
   border: unset;
+  border-radius: 15px;
 }
