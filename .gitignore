@@ -1,0 +1,34 @@
+<<<<<<< HEAD
+node_modules
+=======
+
+# Файлы и папки операционной системы
+
+.DS_Store
+
+Thumbs.db
+
+
+
+# Файлы редактора
+
+.idea
+
+*.sublime*
+
+.vscode
+
+dist
+
+# Вспомогательные файлы
+
+*.log*
+
+node_modules/
+
+*.psd*
+
+*.fig*
+
+
+>>>>>>> 812c3b989a021831e75c0a35be8d17dd5dcf4f93
