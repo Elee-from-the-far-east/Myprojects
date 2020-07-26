@@ -1,0 +1,32 @@
+.freelance {
+  min-height: 362px;
+  padding: 100px 0;
+
+  color: #fff;
+  text-align: center;
+
+  background-color: $darkbg;
+}
+
+.freelance__flex-container {
+}
+
+.freelancer__text {
+  margin: 0 0 22px;
+
+  font-size: 22px;
+  line-height: 32px;
+}
+
+.freelancer__text--big {
+  margin-bottom: 37px;
+
+  font-size: 48px;
+  line-height: 32px;
+}
+
+.freelancer__button {
+  padding: 16px 55px 16px 56px;
+
+  letter-spacing: 0.8px;
+}
