@@ -1,4 +1,6 @@
 .achivments {
+  padding: 25px 0;
+
   background-color: $lightbg;
 }
 
@@ -9,13 +11,16 @@
   justify-content: center;
   min-height: 350px;
   margin: 0 -135px 0 0;
+  @media (max-width: 1170px) {
+    min-height: 500px;
+  }
 }
 
 .achivments__container {
   position: relative;
 
   width: 166px;
-  margin: 0 135px 0 0;
+  margin: 0 135px 15px 0;
   padding-top: 100px;
 
   text-align: center;

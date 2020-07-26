@@ -5,9 +5,9 @@
     "browser": true,
     "node": true
   },
-  "extends": ["eslint:recommended", "google","prettier"],
+  "extends": ["eslint:recommended", "google", "prettier"],
+  "ignorePatterns": ["jquery-3.5.1.slim.js"],
   "rules": {
     "require-jsdoc": "off"
-
   }
 }

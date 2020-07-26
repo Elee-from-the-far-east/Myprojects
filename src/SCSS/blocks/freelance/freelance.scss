@@ -23,6 +23,9 @@
 
   font-size: 48px;
   line-height: 32px;
+  @media (max-width: 650px) {
+    line-height: 1.2;
+  }
 }
 
 .freelancer__button {
