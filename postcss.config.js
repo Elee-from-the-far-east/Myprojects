@@ -2,9 +2,11 @@ module.exports = ({ file, options, env }) => ({
     plugins: {
         "postcss-font-magician": {
             variants: {
-                "Roboto Condensed": {
+                Roboto: {
                     "300": [],
                     "400": [],
+                    "400 italic": [],
+                    "500": [],
                     "700": [],
                 },
             },

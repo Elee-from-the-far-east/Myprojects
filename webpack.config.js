@@ -6,7 +6,6 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ImageminPlugin = require("imagemin-webpack-plugin").default;
 const imageminMozjpeg = require("imagemin-mozjpeg");
 const { path: PROJECT_ROOT } = require("app-root-path");
@@ -50,7 +49,7 @@ module.exports = {
         path: BUILD_DIR,
     },
     resolve: {
-        extensions: [".js"],
+        extensions: [".js", ".html"],
         alias: {
             "@": SOURCE_DIR,
             "@core": path.resolve(__dirname, "src/core"),
@@ -64,16 +63,8 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        // new CopyWebpackPlugin({
-        //     patterns: [
-        //         {
-        //             from: SOURCE_DIR + "/images",
-        //             to: BUILD_DIR,
-        //             noErrorOnMissing: true,
-        //         },
-        //     ],
-        // }),
         new ImageminPlugin({
+            disable: isDev,
             test: /\.(jpe?g|png|gif|svg)$/i,
             plugins: [
                 imageminMozjpeg({
@@ -111,10 +102,6 @@ module.exports = {
             inject: false,
             minify: false,
         }),
-
-        // new FileIncludeWebpackPlugin({
-        //     source: "./html",
-        // }),
         new MiniCssExtractPlugin({
             filename: filename("css"),
         }),
@@ -141,9 +128,19 @@ module.exports = {
                             reloadAll: true,
                         },
                     },
-                    { loader: "css-loader", options: { importLoaders: 1 } },
+                    {
+                        loader: "css-loader",
+                        options: { importLoaders: 1, sourceMap: true },
+                    },
+
                     "postcss-loader",
-                    "sass-loader",
+                    "resolve-url-loader",
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true,
+                        },
+                    },
                 ],
             },
             {

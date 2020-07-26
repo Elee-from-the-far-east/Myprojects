@@ -1,1 +1,11 @@
+@import "normalize.css";
+@import "./reuseables/mixins";
+@import "./reuseables/variables";
+@import "./reuseables/blocks/utils";
+@import "./reuseables/blocks/positioning";
+@import "./reuseables/blocks/content";
+@import "./reuseables/blocks/page";
+@import "./reuseables/blocks/image";
+@import "./reuseables/blocks/title";
 @import "./blocks/header/header";
+@import "./blocks/footer/footer";
