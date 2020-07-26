@@ -6,7 +6,6 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ImageminPlugin = require("imagemin-webpack-plugin").default;
 const imageminMozjpeg = require("imagemin-mozjpeg");
 const { path: PROJECT_ROOT } = require("app-root-path");
@@ -64,15 +63,6 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        // new CopyWebpackPlugin({
-        //     patterns: [
-        //         {
-        //             from: SOURCE_DIR + "/images",
-        //             to: BUILD_DIR,
-        //             noErrorOnMissing: true,
-        //         },
-        //     ],
-        // }),
         new ImageminPlugin({
             disable: isDev,
             test: /\.(jpe?g|png|gif|svg)$/i,
@@ -112,10 +102,6 @@ module.exports = {
             inject: false,
             minify: false,
         }),
-
-        // new FileIncludeWebpackPlugin({
-        //     source: "./html",
-        // }),
         new MiniCssExtractPlugin({
             filename: filename("css"),
         }),
