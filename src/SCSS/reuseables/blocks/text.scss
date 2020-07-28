@@ -1,0 +1,14 @@
+.text {
+  margin: 0;
+
+  color: #848789;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 29.99px;
+  text-align: center;
+
+  &--bigger {
+    font-size: 18px;
+    line-height: 34px;
+  }
+}

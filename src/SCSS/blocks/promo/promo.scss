@@ -1,0 +1,27 @@
+.promo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 469px;
+
+  background-color: #f7f7f7;
+}
+
+.promo__title {
+  position: relative;
+
+  margin-bottom: 35px;
+
+  &::before {
+    @include pseduo-el(52px, 43px);
+    top: -43px - 34px;
+    left: 50%;
+
+    background: url("../../../images/lab.png") no-repeat center;
+
+    transform: translate(-50%);
+  }
+}
+
+.promo__text {
+}

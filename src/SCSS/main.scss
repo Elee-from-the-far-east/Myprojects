@@ -7,5 +7,20 @@
 @import "./reuseables/blocks/page";
 @import "./reuseables/blocks/image";
 @import "./reuseables/blocks/title";
+@import "./reuseables/blocks/text";
+@import "./reuseables/blocks/burger";
 @import "./blocks/header/header";
 @import "./blocks/footer/footer";
+@import "./blocks/promo/promo";
+
+body,
+html {
+  min-width: 320px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+
+  @media (max-width: 767px) {
+    overflow: hidden;
+  }
+}
