@@ -1,0 +1,81 @@
+.olivia {
+  display: flex;
+
+  &-reverse {
+    flex-direction: row-reverse;
+  }
+  @media (max-width: 980px) {
+    flex-direction: column;
+
+    &-reverse {
+      flex-direction: column-reverse;
+    }
+  }
+}
+
+.olivia__lift-column {
+  position: relative;
+
+  flex: 0 1 1067/1600 * 100%;
+
+  &:hover {
+    .olivia__logo {
+      visibility: visible;
+      opacity: 0.5;
+    }
+  }
+  @media (max-width: 980px) {
+    padding-bottom: 55.333333%;
+  }
+}
+
+.olivia__image {
+}
+
+.olivia__right-column {
+  flex: 0 1 533/1600 * 100%;
+}
+
+.olivia__logo {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  background-color: #64ac93;
+  visibility: hidden;
+  opacity: 0;
+
+  transition: all 1.3s ease;
+}
+
+.olivia__text-container {
+  padding: 130px 60px 100px;
+  @media (max-width: 980px) {
+    padding: 120px 25px 25px;
+  }
+}
+
+.olivia__title {
+  margin-bottom: 20px;
+
+  &::before {
+    background: url("../../../images/olivia.png") no-repeat center;
+  }
+}
+
+.olivia__text {
+  text-align: justify;
+}
+
+.olivia__image-container {
+  position: relative;
+
+  padding-bottom: 37.333333%;
+}

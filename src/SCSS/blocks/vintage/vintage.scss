@@ -1,0 +1,8 @@
+.vintage {
+}
+
+.vintage__title {
+  &::before {
+    background: url("../../../images/logo2-vintage.png") no-repeat center;
+  }
+}

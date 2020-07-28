@@ -7,4 +7,16 @@
   letter-spacing: 3.6px;
   text-align: center;
   text-transform: uppercase;
+
+  &--psedo {
+    position: relative;
+
+    &::before {
+      @include pseduo-el(52px, 43px);
+      top: -43px - 34px;
+      left: 50%;
+
+      transform: translate(-50%);
+    }
+  }
 }

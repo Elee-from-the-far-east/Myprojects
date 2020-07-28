@@ -12,6 +12,8 @@
 @import "./blocks/header/header";
 @import "./blocks/footer/footer";
 @import "./blocks/promo/promo";
+@import "./blocks/olivia/olivia";
+@import "./blocks/vintage/vintage";
 
 body,
 html {
@@ -20,7 +22,7 @@ html {
   margin: 0;
   padding: 0;
 
-  @media (max-width: 767px) {
+  &.active {
     overflow: hidden;
   }
 }

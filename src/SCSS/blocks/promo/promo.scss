@@ -2,9 +2,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 469px;
+  padding: 190px 0 140px;
 
   background-color: #f7f7f7;
+  @media (max-width: 748px) {
+    padding-top: 120px;
+    padding-bottom: 25px;
+  }
+  @media (max-width: 378px) {
+  }
 }
 
 .promo__title {

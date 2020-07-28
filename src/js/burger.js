@@ -4,5 +4,6 @@ export const addBurgerClickEvent = (e) => {
         document
             .querySelector(".main-header__nav")
             .classList.toggle("main-header__nav--active");
+        document.body.classList.toggle("active");
     });
 };
