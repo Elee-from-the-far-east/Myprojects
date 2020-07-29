@@ -8,6 +8,8 @@
 @import "./reuseables/blocks/image";
 @import "./reuseables/blocks/title";
 @import "./reuseables/blocks/text";
+@import "./reuseables/blocks/socials";
+@import "./reuseables/blocks/logo";
 @import "./reuseables/blocks/burger";
 @import "./blocks/header/header";
 @import "./blocks/footer/footer";
@@ -15,6 +17,9 @@
 @import "./blocks/olivia/olivia";
 @import "./blocks/vintage/vintage";
 @import "./blocks/retro/retro";
+@import "./blocks/slider/slider";
+@import "./blocks/shop-window/shop-window";
+@import "./blocks/form/form";
 
 body,
 html {

@@ -1,0 +1,44 @@
+.slider {
+  padding-top: 120px;
+  padding-bottom: 25px;
+
+  background-color: #f7f7f7;
+  @media (max-width: 767px) {
+    padding-top: 60px;
+  }
+}
+
+.slider__link {
+  margin: 0 auto 35px;
+}
+
+.slider__title {
+  margin-bottom: 25px;
+
+  text-transform: none;
+}
+
+.slider__text {
+  margin-bottom: 100px;
+  @media (max-width: 767px) {
+    margin-bottom: 50px;
+  }
+}
+
+.slider__buttons {
+  text-align: center;
+}
+
+.slider__button {
+  width: 12px;
+  height: 14px;
+
+  background-color: transparent;
+  border: 1px solid #c8c8c8;
+
+  border-radius: 50%;
+
+  &--active {
+    background-color: #a9afb3;
+  }
+}

@@ -8,6 +8,9 @@
   justify-content: space-between;
   min-height: 250px;
   margin: 0;
+  @media (max-width: 767px) {
+    flex-direction: column;
+  }
 }
 
 .main-footer__address {
@@ -27,33 +30,14 @@
       font-style: italic;
     }
   }
+  @media (max-width: 767px) {
+    text-align: center;
+  }
 }
 
 .main-footer__socials {
   @include reset-menu;
   display: flex;
-}
-
-.main-footer__socials-link {
-  display: block;
-  width: 35px;
-  height: 35px;
-  margin: 0 15px 0 0;
-
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-
-  &--tw {
-    background-image: url("../../../images/twitter.png");
-  }
-
-  &--face {
-    background-image: url("../../../images/facebook.png");
-  }
-
-  &--inst {
-    background-image: url("../../../images/instagram.png");
-  }
 }
 
 .main__footer-copyright {

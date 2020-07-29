@@ -1,0 +1,24 @@
+.socials {
+}
+
+.socials__link {
+  display: block;
+  width: 35px;
+  height: 35px;
+  margin: 0 15px 0 0;
+
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+
+  &--tw {
+    background-image: url("../../../images/twitter.png");
+  }
+
+  &--face {
+    background-image: url("../../../images/facebook.png");
+  }
+
+  &--inst {
+    background-image: url("../../../images/instagram.png");
+  }
+}
