@@ -6,12 +6,12 @@
 }
 
 .shop-window__column {
-  flex: 0 0 33.333%;
+  flex: 0 1 33.333%;
 
   &--middle {
     position: relative;
 
-    flex: 0 1 33.333/2 * 100%;
+    flex: 1 1 auto;
     padding-bottom: 534/1600 * 100%;
 
     &:hover {
