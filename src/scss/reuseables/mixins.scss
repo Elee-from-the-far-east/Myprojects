@@ -1,0 +1,43 @@
+@mixin add-fonts($name, $weight, $style, $file-name) {
+  @font-face {
+    font-weight: $weight;
+    font-family: $name;
+    font-style: $style;
+    src: url("../../fonts/#{$file-name}.woff") format("woff"),
+      url("../../fonts/#{$file-name}.woff2") format("woff2");
+    font-display: swap;
+  }
+}
+
+@mixin reset-menu {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+@mixin pseduo-el($width, $height) {
+  position: absolute;
+
+  width: $width;
+  height: $height;
+
+  content: "";
+}
+@mixin border {
+  border: 1px solid red;
+}
+
+@mixin btn-outline {
+  box-shadow: -2px 2px 0 2px white, -2px -2px 0 2px white, 2px 2px 0 2px white,
+    -2px 0 0 2px white, -4px 4px 0 3px black, -4px -4px 0 3px black,
+    4px 4px 0 3px black, -4px 0 0 3px black;
+}
+
+@mixin adaptiv-font($pcSize, $mobSize) {
+  $add-size: $pcSize - $mobSize;
+  $max-width: $max-width - 320;
+  font-size: calc(
+    #{$mobSize + px} + #{$add-size} * ((100vw - 320px) / #{$max-width})
+  );
+}
