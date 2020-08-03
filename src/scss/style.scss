@@ -1,0 +1,39 @@
+@import "./reuseables/variables";
+@import "./reuseables/mixins";
+@import "../img/sprites/sprite";
+@import "./reuseables/fonts";
+@import "./reuseables/blocks/utils";
+@import "./reuseables/blocks/positioning";
+@import "./reuseables/blocks/content";
+@import "./reuseables/blocks/page";
+@import "./reuseables/blocks/image";
+@import "./reuseables/blocks/title";
+@import "./reuseables/blocks/text";
+@import "./reuseables/blocks/socials";
+@import "./reuseables/blocks/logo";
+@import "./reuseables/blocks/burger";
+@import "./reuseables/blocks/menu";
+@import "./reuseables/blocks/button";
+@import "./header/header";
+@import "./footer/footer";
+@import "./slider/slider";
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+button,
+input {
+  @include sprite-image($arrow-left);
+  color: inherit;
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

@@ -1,0 +1,30 @@
+.footer {
+  padding: 20px 0;
+
+  font-weight: 400;
+
+  font-size: 16px;
+  line-height: 20px;
+
+  background-color: #f2f8fb;
+}
+
+.footer__container {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0 20px;
+  align-items: center;
+}
+
+.footer__logo {
+  width: 74px;
+  height: 30px;
+}
+
+.footer__copyright {
+  justify-self: right;
+
+  span {
+    color: #06a9b3;
+  }
+}

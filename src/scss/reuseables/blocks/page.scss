@@ -1,0 +1,11 @@
+.page {
+  display: grid;
+  grid-template-rows: minmax(80px, auto) 1fr minmax(80px, auto);
+  min-height: 100vh;
+
+  color: #333;
+  font-weight: 300;
+  font-size: 16px;
+  font-family: "Montserrat";
+  line-height: 32px;
+}

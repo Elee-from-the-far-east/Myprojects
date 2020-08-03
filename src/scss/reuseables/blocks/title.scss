@@ -1,0 +1,33 @@
+.title {
+  margin: 0;
+
+  color: #353738;
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 3.6px;
+  text-align: center;
+  text-transform: uppercase;
+
+  &--light {
+    font-weight: 300;
+    letter-spacing: 1.8px;
+  }
+
+  &--pt-sans {
+    font-weight: 400;
+    font-family: "PT Sans";
+    letter-spacing: 1.8px;
+  }
+
+  &--psedo {
+    position: relative;
+
+    &::before {
+      @include pseduo-el(52px, 43px);
+      top: -43px - 34px;
+      left: 50%;
+
+      transform: translate(-50%);
+    }
+  }
+}

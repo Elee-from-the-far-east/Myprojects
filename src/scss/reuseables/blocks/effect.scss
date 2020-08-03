@@ -1,0 +1,28 @@
+.effect {
+  position: relative;
+
+  &:hover,
+  &--on {
+    background-color: #f1f3fe;
+
+    .videos__play {
+      background-image: url("./img/btna.png");
+    }
+  }
+
+  &:hover::before,
+  &--on::before {
+    position: absolute;
+    top: -2px;
+    left: 0;
+
+    width: 7px;
+    height: 110%;
+
+    background-color: #576bcc;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    content: "";
+  }
+}

@@ -1,0 +1,68 @@
+.burger {
+  position: absolute;
+  top: 55px;
+  right: 35px;
+  z-index: 5;
+
+  display: none;
+  width: 35px;
+  height: 35px;
+
+  background-color: transparent;
+  border: unset;
+  outline-offset: 10px;
+
+  &:focus {
+    outline-color: #4d4959;
+  }
+
+  &__el,
+  &::before,
+  &::after {
+    position: absolute;
+    left: 0;
+
+    width: 100%;
+    height: 2px;
+
+    background-color: #4d4959;
+
+    transition: all 0.3s ease-in-out;
+
+    content: "";
+    @media (max-width: 767px) {
+    }
+  }
+
+  &__el {
+    top: 50%;
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  &--active {
+    .burger__el {
+      background-color: blanchedalmond;
+      transform: scale(0);
+    }
+
+    &::before {
+      background-color: blanchedalmond;
+      transform: rotate(45deg) translate(11px, 12px);
+    }
+
+    &::after {
+      background-color: blanchedalmond;
+      transform: rotate(-45deg) translate(11px, -12px);
+    }
+  }
+  @media (max-width: 767px) {
+    display: block;
+  }
+}
