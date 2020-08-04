@@ -181,7 +181,7 @@ const removeSvgAtrr = () => {
     });
 };
 
-const svgSprites = () => {
+const svgIcons = () => {
     return (
         src(`${SOURCE_DIR}/img/icons/*.svg`)
             // .pipe(removeSvgAtrr())
@@ -191,20 +191,15 @@ const svgSprites = () => {
                         css: {
                             dest: ".",
                             bust: false,
-                            sprite: "sprite-svg.svg",
+                            sprite: "sprite-icons.svg",
                             render: {
                                 scss: {
-                                    dest: "sprite-svg.scss",
+                                    dest: "sprite-icons.scss",
                                 },
                             },
                             mixin: "svg",
                             prefix: `@mixin svg-`,
                             layout: "vertical",
-                        },
-                        stack: {
-                            dest: ".",
-                            bust: false,
-                            sprite: "sprite.svg",
                         },
                     },
                 })
@@ -217,6 +212,22 @@ const svgSprites = () => {
                 )
             )
     );
+};
+
+const svgSprites = () => {
+    return src(`${SOURCE_DIR}/img/**/*.svg`)
+        .pipe(
+            gulpSvgSprite({
+                mode: {
+                    stack: {
+                        dest: ".",
+                        bust: false,
+                        sprite: "sprite.svg",
+                    },
+                },
+            })
+        )
+        .pipe(dest(`${SOURCE_DIR}/img/sprites`));
 };
 
 const fontRead = (cb) => {
@@ -244,7 +255,7 @@ const fontRead = (cb) => {
     }
 };
 
-const init = series(fontsInit, fontRead, pngSprites, svgSprites);
+const init = series(fontsInit, fontRead, pngSprites, svgSprites, svgIcons);
 const build = series(
     delFiles,
     parallel(img, fonts, css, js),
