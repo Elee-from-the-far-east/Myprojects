@@ -1,24 +1,32 @@
 .socials {
+  display: grid;
+  grid-template-columns: repeat(3, auto) minmax(44px, 1fr);
+  // gap: 25px 73px;
 }
 
 .socials__link {
-  display: block;
-  width: 35px;
-  height: 35px;
-  margin: 0 15px 0 0;
-
+  @include border;
   background-repeat: no-repeat;
-  background-position: 50% 50%;
+  background-position: center;
+  background-size: cover;
 
-  &--tw {
-    background-image: url("../../../images/twitter.png");
+  .socials__icon {
+    width: 44px;
+    height: 44px;
+
+    fill: #cfdce3;
+
+    &:hover {
+      fill: #06a9b3;
+    }
   }
 
-  &--face {
-    background-image: url("../../../images/facebook.png");
+  &--instagram {
   }
 
-  &--inst {
-    background-image: url("../../../images/instagram.png");
+  &--facebook {
+  }
+
+  &--vk {
   }
 }

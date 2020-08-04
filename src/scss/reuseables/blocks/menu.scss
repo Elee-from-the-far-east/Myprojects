@@ -1,0 +1,26 @@
+.menu {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 25px 63px;
+
+  color: #06a9b3;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+
+  &--user {
+    grid-template-columns: repeat(2, auto);
+    align-items: center;
+  }
+
+  &--footer {
+    justify-self: center;
+  }
+}
+
+.menu__link {
+  word-wrap: break-word;
+
+  &--user {
+  }
+}

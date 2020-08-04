@@ -1,9 +1,11 @@
 .container {
   max-width: $max-width;
   margin: 0 auto;
+  padding: 0 25px;
 
   &--smaller {
-    max-width: 1100px;
+    max-width: $max-width-smaller;
+    padding: 0;
   }
 
   // @media (max-width: 1100px) {

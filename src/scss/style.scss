@@ -1,7 +1,6 @@
-@import "./reuseables/mixins";
-@import "./sprite";
-@import "./fonts";
 @import "./reuseables/variables";
+@import "./reuseables/mixins";
+@import "./reuseables/fonts";
 @import "./reuseables/blocks/utils";
 @import "./reuseables/blocks/positioning";
 @import "./reuseables/blocks/content";
@@ -12,18 +11,24 @@
 @import "./reuseables/blocks/socials";
 @import "./reuseables/blocks/logo";
 @import "./reuseables/blocks/burger";
+@import "./reuseables/blocks/menu";
+@import "./reuseables/blocks/button";
+@import "./tmp/sprite-png";
+@import "./tmp/sprite-svg";
+@import "./header/header";
+@import "./footer/footer";
 
-
-*,
-*::before,
-*::after {
-  list-style: none;
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+
+  list-style: none;
 }
+
 button,
 input {
+  color: inherit;
   font: inherit;
 }
 
