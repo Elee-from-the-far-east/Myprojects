@@ -19,6 +19,10 @@
 .footer__logo {
   width: 74px;
   height: 30px;
+
+  img {
+    object-fit: cover;
+  }
 }
 
 .footer__copyright {

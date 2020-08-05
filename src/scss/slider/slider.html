@@ -7,12 +7,12 @@
         Отдохните от суеты мегаполиса в уютном тёплом доме в окружении
         экологически чистых лесов, рек и озёр
       </p>
-      <a href="#" class="slider__link button">Арендоватьдом</a>
+      <a href="#" class="slider__link button">Арендовать</a>
       <ul class="slider__soicials socials">
         <li>
           <a href="#" class="socials__link socials__link--facebook">
-            @@include('../../svg.html', {class:'socials__icon',
-            icon:'facebook'})
+            @@include('../../html/svg.html', {class:'socials__icon',
+            icon:'facebook' ,width:'44', height:'44'})
             <span class="visually-hidden">
               Facebook
             </span></a
@@ -20,39 +20,51 @@
         </li>
         <li>
           <a href="#" class="socials__link socials__link--instagram"
-            >@@include('../../svg.html', {class:'socials__icon',
-            icon:'instagramm'})<span class="visually-hidden">
+            >@@include('../../html/svg.html', {class:'socials__icon',
+            icon:'instagramm' ,width:'44', height:'44'})<span
+              class="visually-hidden"
+            >
               Instagram
             </span></a
           >
         </li>
         <li>
           <a href="#" class="socials__link socials__link--vk"
-            >@@include('../../svg.html', {class:'socials__icon',
-            icon:'vk'})<span class="visually-hidden">
+            >@@include('../../html/svg.html', {class:'socials__icon', icon:'vk'
+            ,width:'44', height:'44'})<span class="visually-hidden">
               vk
             </span></a
           >
         </li>
       </ul>
       <div class="slider__controls">
-        <button
-          class="slider__button slider__button--prev"
-          style="cursor: pointer;"
-        >
+        <button class="slider__button slider__button--prev swiper-button-prev">
+          @@include('../../html/svg.html', {class: 'slider__icon',
+          icon:'left-arrow',width:'32', height:'32'})
           <span class="visually-hidden">Назад</span>
         </button>
-        <button class="slider__button slider__button--next">
+        <button class="slider__button slider__button--next swiper-button-next">
+          @@include('../../html/svg.html', {class:'slider__icon',
+          icon:'right-arrow', width:'32', height:'32'})
           <span class="visually-hidden">Вперед</span>
         </button>
       </div>
     </div>
-    <div class="slider__column slider__column--right slides">
-      <img
-        class="slider__img"
-        src="../../img/slider-photo.jpg"
-        alt="slider-photo"
-      />
+    <div class="slider__column slider__column--right swiper-container">
+      <div class="swiper-wrapper">
+        <img
+          class="swiper-slide"
+          src="../../img/slider-photo.jpg"
+          alt="slider-photo"
+          data-local-src="img/slider-photo.jpg"
+        />
+        <img
+          class="swiper-slide"
+          src="../../img/slider-photo.jpg"
+          alt="slider-photo"
+          data-local-src="img/slider-photo.jpg"
+        />
+      </div>
     </div>
   </div>
 </section>

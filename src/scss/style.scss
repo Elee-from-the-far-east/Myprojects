@@ -1,6 +1,7 @@
 @import "./reuseables/variables";
 @import "./reuseables/mixins";
-@import "../img/sprites/sprite";
+@import "./tmp/sprite-png";
+@import "./tmp/sprite-icons";
 @import "./reuseables/fonts";
 @import "./reuseables/blocks/utils";
 @import "./reuseables/blocks/positioning";
@@ -28,7 +29,6 @@
 
 button,
 input {
-  @include sprite-image($arrow-left);
   color: inherit;
   font: inherit;
 }

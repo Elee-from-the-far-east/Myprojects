@@ -1,13 +1,36 @@
-document
-    .querySelector(".header__label")
-    .addEventListener("click", function (e) {
-        document
-            .querySelector(".header__input")
-            .classList.toggle("header__input--active");
+window.onload = function (event) {
+    event.preventDefault();
+    document
+        .querySelector(".header__label")
+        .addEventListener("click", function (e) {
+            document
+                .querySelector(".header__input")
+                .classList.toggle("header__input--active");
+        });
+
+    const sliderButtons = document.querySelectorAll(".slider__button");
+    sliderButtons.forEach((el) => {
+        el.addEventListener("mouseleave", function () {
+            el.blur();
+        });
+        // el.addEventListener("click", function () {
+        //     swiper.slideNext();
+        // });
     });
 
-document
-    .querySelector(".slider__button--next")
-    .addEventListener("click", function (e) {
-        console.log("sdsfdsf");
+    const swiper = new Swiper(".swiper-container", {
+        init: true,
+        loop: true,
+        slidesPerView: "auto",
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: true,
+        },
+        autoHeight: true,
+        grabCursor: true,
+        navigation: {
+            nextEl: ".slider__button--next",
+            prevEl: ".slider__button--prev",
+        },
     });
+};

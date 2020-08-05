@@ -1,0 +1,14 @@
+@mixin svg {
+	background: url("sprite-icons.svg") no-repeat;
+}
+
+@mixin svg-search {
+	@include svg;
+	background-position: 0 0;
+}
+
+@mixin svg-search-dims {
+	width: 16px;
+	height: 16px;
+}
+

@@ -9,7 +9,7 @@ const path = {
         img: BUILD_DIR + "/img",
     },
     src: {
-        html: [SOURCE_DIR + "/*.html", !SOURCE_DIR + "/_*.html"],
+        html: [SOURCE_DIR + "/*.html"],
         css: SOURCE_DIR + "/scss/style.scss",
         js: SOURCE_DIR + "/js/main.js",
         fonts: {
@@ -17,7 +17,11 @@ const path = {
             ttf: SOURCE_DIR + "/fonts/*.ttf",
             woff: SOURCE_DIR + "/fonts/*.{woff,woff2}",
         },
-        img: SOURCE_DIR + "/img/**/*.{jpg,jpeg,png,svg,gif,webp,ico}",
+        img: [
+            SOURCE_DIR + "/img/**/*.{jpg,jpeg,png,svg,gif,webp,ico}",
+            `!${SOURCE_DIR}/img/icons/**`,
+            `!${SOURCE_DIR}/img/*.svg`,
+        ],
     },
     watch: {
         html: SOURCE_DIR + "/**/*.html",
@@ -29,7 +33,7 @@ const path = {
     clean: BUILD_DIR,
 };
 
-const { src, dest, series, parallel } = require("gulp");
+const { src, dest, series, parallel, lastRun } = require("gulp");
 const gulp = require("gulp");
 const browserSync = require("browser-sync").create();
 const gulpFileInclude = require("gulp-file-include");
@@ -42,26 +46,26 @@ const gulpRename = require("gulp-rename");
 const gulpUglify = require("gulp-uglify");
 const gulpImagemin = require("gulp-imagemin");
 const gulpWebp = require("gulp-webp");
-const gulpWebpHtml = require("gulp-webp-in-html");
-const gulpWebpCss = require("gulp-webp-css");
 const spritesmith = require("gulp.spritesmith");
 const gulpSvgSprite = require("gulp-svg-sprite");
 const gulpTtf2woff = require("gulp-ttf2woff");
 const gulpTtf2woff2 = require("gulp-ttf2woff2");
 const gulpSourcemaps = require("gulp-sourcemaps");
 const gulpResolveUrl = require("gulp-resolve-url");
-
+const gulpIf = require("gulp-if");
 const gulpConcat = require("gulp-concat");
 const gulpCheerio = require("gulp-cheerio");
+const rep = require("gulp-replace-image-src-from-data-attr");
 
 const babel = require("gulp-babel");
 const fs = require("fs");
 
 const html = () => {
-    return src(path.src.html, { since: gulp.lastRun(html) })
+    return src(path.src.html)
         .pipe(gulpFileInclude())
-        .pipe(gulpWebpHtml())
-        .pipe(dest(path.build.html));
+        .pipe(rep({ keepOrigin: false }))
+        .pipe(dest(path.build.html))
+        .pipe(browserSync.stream());
 };
 
 const fontsInit = () => {
@@ -76,7 +80,7 @@ const fonts = () => {
 };
 
 const js = () => {
-    return src(path.src.js, { since: gulp.lastRun(js) })
+    return src(path.src.js)
         .pipe(
             babel({
                 presets: ["@babel/env"],
@@ -89,13 +93,13 @@ const js = () => {
                 extname: ".min.js",
             })
         )
-        .pipe(dest(path.build.js));
+        .pipe(dest(path.build.js))
+        .pipe(browserSync.stream());
 };
 
 const css = () => {
-    return src(path.src.css, { since: gulp.lastRun(css) })
+    return src(path.src.css)
         .pipe(gulpSourcemaps.init())
-
         .pipe(
             gulpSass({
                 outputStyle: "expanded",
@@ -104,14 +108,11 @@ const css = () => {
         .pipe(
             gulpAutoprefixer({
                 cascade: true,
-                grid: "autoplace",
                 overrideBrowserslist: ["defaults"],
             })
         )
         .pipe(gulpResolveUrl())
-
         .pipe(media())
-        .pipe(gulpWebpCss())
         .pipe(gulpSourcemaps.write())
         .pipe(dest(path.build.css))
         .pipe(gulpCleanCss())
@@ -120,17 +121,15 @@ const css = () => {
                 extname: ".min.css",
             })
         )
-        .pipe(gulpSourcemaps.write())
-        .pipe(dest(path.build.css));
+        .pipe(dest(path.build.css))
+        .pipe(browserSync.stream());
 };
 
 const img = () => {
-    return src(path.src.img)
-        .pipe(gulpWebp({}))
-        .pipe(dest(path.build.img))
-        .pipe(src(path.src.img))
-        .pipe(gulpImagemin())
+    src(path.src.img, { since: lastRun(img) })
+        .pipe(gulpWebp())
         .pipe(dest(path.build.img));
+    return src(path.src.img).pipe(gulpImagemin()).pipe(dest(path.build.img));
 };
 
 const browserSyncFn = () => {
@@ -141,13 +140,18 @@ const browserSyncFn = () => {
         port: 3000,
         notify: false,
     });
-    browserSync.watch(BUILD_DIR).on("change", browserSync.reload);
+};
+
+const reload = (done) => {
+    browserSync.reload();
+    done();
 };
 
 const liveWatch = () => {
     gulp.watch(path.watch.css, css);
     gulp.watch(path.watch.html, html);
     gulp.watch(path.watch.js, js);
+    gulp.watch(path.watch.img, series(img, reload));
 };
 const delFiles = () => {
     return del(path.clean);
@@ -158,36 +162,78 @@ const pngSprites = () => {
         .pipe(
             spritesmith({
                 imgName: "sprite.png",
-                cssName: "sprite.scss",
+                cssName: "sprite-png.scss",
                 imgOpts: { quality: 75 },
             })
         )
-        .pipe(dest(`${SOURCE_DIR}/img/sprites`));
+        .pipe(
+            gulpIf(
+                "*.scss",
+                dest(SOURCE_DIR + "/scss/tmp"),
+                dest(`${SOURCE_DIR}/img/sprites`)
+            )
+        );
 };
 
-const svgSprite = () => {
+const removeSvgAtrr = () => {
+    return gulpCheerio({
+        run: function ($) {
+            $("[fill]").removeAttr("fill");
+            $("[stroke]").removeAttr("stroke");
+            $("[style]").removeAttr("style");
+            $("[viewBox]").attr("fill", "green");
+        },
+        parserOptions: { xmlMode: true },
+    });
+};
+
+const svgIcons = () => {
     return (
         src(`${SOURCE_DIR}/img/icons/*.svg`)
-            // .pipe(
-            //     gulpCheerio({
-            //         run: function ($, file) {
-            //             $("[fill]").first().removeAttr("fill");
-            //             $("[stroke]").removeAttr("stroke");
-            //             $("[style]").removeAttr("style");
-            //         },
-            //         parserOptions: { xmlMode: true },
-            //     })
-            // )
+            // .pipe(removeSvgAtrr())
             .pipe(
                 gulpSvgSprite({
                     mode: {
-                        stack: { sprite: "../sprite.svg" },
-                        symbol: false,
+                        css: {
+                            dest: ".",
+                            bust: false,
+                            sprite: "sprite-icons.svg",
+                            render: {
+                                scss: {
+                                    dest: "sprite-icons.scss",
+                                },
+                            },
+                            mixin: "svg",
+                            prefix: `@mixin svg-`,
+                            layout: "vertical",
+                        },
                     },
                 })
             )
-            .pipe(dest(`${SOURCE_DIR}/img/sprites`))
+            .pipe(
+                gulpIf(
+                    "*.scss",
+                    dest(SOURCE_DIR + "/scss/tmp"),
+                    dest(`${SOURCE_DIR}/img/sprites`)
+                )
+            )
     );
+};
+
+const svgSprites = () => {
+    return src(`${SOURCE_DIR}/img/*.svg`)
+        .pipe(
+            gulpSvgSprite({
+                mode: {
+                    stack: {
+                        dest: ".",
+                        bust: false,
+                        sprite: "sprite.svg",
+                    },
+                },
+            })
+        )
+        .pipe(dest(`${SOURCE_DIR}/img/sprites`));
 };
 
 const fontRead = (cb) => {
@@ -215,14 +261,16 @@ const fontRead = (cb) => {
     }
 };
 
-const init = series(fontsInit, fontRead, pngSprites, svgSprite);
+const init = series(fontsInit, fontRead, pngSprites, svgSprites, svgIcons);
 const build = series(
     delFiles,
-    parallel(html, img, fonts, css, js),
+    parallel(img, fonts, css, js),
+    html,
     parallel(liveWatch, browserSyncFn)
 );
 const watch = parallel(liveWatch, browserSyncFn);
 exports.default = build;
 exports.init = init;
 exports.watch = watch;
-exports.svg = pngSprites;
+exports.svg = parallel(svgSprites, svgIcons);
+exports.png = pngSprites;

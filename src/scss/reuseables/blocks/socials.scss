@@ -1,7 +1,8 @@
 .socials {
   display: grid;
-  grid-template-columns: repeat(4, 44px);
+  grid-template-columns: repeat(5, auto);
   gap: 25px 73px;
+  justify-content: start;
 }
 
 .socials__link {
