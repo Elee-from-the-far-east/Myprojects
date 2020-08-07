@@ -33,9 +33,7 @@ const path = {
     clean: BUILD_DIR,
 };
 
-const { src, dest, series, parallel, lastRun } = require("gulp");
-const $ = require('gulp-load-plugins')();
-
+const { src, dest, series, parallel, lastRun, watch } = require("gulp");
 const browserSync = require("browser-sync").create();
 const gulpFileInclude = require("gulp-file-include");
 const del = require("del");
@@ -57,8 +55,6 @@ const gulpIf = require("gulp-if");
 const gulpConcat = require("gulp-concat");
 const gulpCheerio = require("gulp-cheerio");
 const rep = require("gulp-replace-image-src-from-data-attr");
-const gulpRev = require('gulp-rev');
-const gulpRevRewrite = require('gulp-rev-rewrite');
 const babel = require("gulp-babel");
 const fs = require("fs");
 
@@ -158,18 +154,16 @@ const reload = (done) => {
 };
 
 const liveWatch = () => {
-    gulp.watch(path.watch.css, css);
-    gulp.watch(path.watch.html, html);
-    gulp.watch(path.watch.js, js);
-    gulp.watch(path.watch.img, series(img, reload));
+    watch(path.watch.css, css);
+    watch(path.watch.html, html);
+    watch(path.watch.js, js);
+    watch(path.watch.img, series(img, reload));
 };
 const delFiles = () => {
     return del(path.clean);
 };
 
 const pngSprites = () => {
-
-    
     return src(`${SOURCE_DIR}/img/icons/*.png`)
         .pipe(
             spritesmith({
@@ -303,7 +297,7 @@ const build = series(
     html,
     parallel(liveWatch, browserSyncFn)
 );
-const watch = parallel(liveWatch, browserSyncFn);
+const server = parallel(liveWatch, browserSyncFn);
 exports.default = build;
 exports.init = init;
 exports.watch = watch;
@@ -311,4 +305,3 @@ exports.svg = parallel(svgSprites, svgIcons);
 exports.png = pngSprites;
 exports.fony = fontRead;
 exports.js = js;
-exports.html = html
