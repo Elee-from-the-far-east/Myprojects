@@ -49,7 +49,7 @@ module.exports = {
         path: BUILD_DIR,
     },
     resolve: {
-        extensions: [".js", ".html"],
+        extensions: [".js"],
         alias: {
             "@": SOURCE_DIR,
             "@core": path.resolve(__dirname, "src/core"),
@@ -110,6 +110,7 @@ module.exports = {
         }),
     ],
     module: {
+        noParse: /jquery|lodash/,
         rules: [
             {
                 test: /\.css$/,
