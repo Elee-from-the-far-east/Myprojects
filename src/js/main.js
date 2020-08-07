@@ -1,5 +1,4 @@
 window.onload = function (event) {
-    event.preventDefault();
     document
         .querySelector(".header__label")
         .addEventListener("click", function (e) {
@@ -13,9 +12,6 @@ window.onload = function (event) {
         el.addEventListener("mouseleave", function () {
             el.blur();
         });
-        // el.addEventListener("click", function () {
-        //     swiper.slideNext();
-        // });
     });
 
     const swiper = new Swiper(".swiper-container", {

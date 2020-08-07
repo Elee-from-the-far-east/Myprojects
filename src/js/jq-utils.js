@@ -1,6 +1,4 @@
-const a = 1;
-
-export const imgToSvg = () => {
+const imgToSvg = () => {
     $("img.img-svg").each(function () {
         const $img = $(this);
         const imgClass = $img.attr("class");
@@ -35,7 +33,7 @@ export const imgToSvg = () => {
     });
 };
 
-export const slickSlider = () => {
+const slickSlider = () => {
     $(".slider").slick({
         infinite: true,
         slidesToShow: 1,
@@ -49,8 +47,7 @@ export const slickSlider = () => {
     $(".btn--prev").slick("slickPrev");
     $(".btn--next").slick("slickNext");
 };
-
-export const addOnlineTimer = () => {
+const addOnlineTimer = () => {
     setInterval(() => {
         $($input).val(new Date().toLocaleTimeString());
     }, 1000);

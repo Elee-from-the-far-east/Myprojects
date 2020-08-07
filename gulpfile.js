@@ -34,7 +34,8 @@ const path = {
 };
 
 const { src, dest, series, parallel, lastRun } = require("gulp");
-const gulp = require("gulp");
+const $ = require('gulp-load-plugins')();
+
 const browserSync = require("browser-sync").create();
 const gulpFileInclude = require("gulp-file-include");
 const del = require("del");
@@ -56,7 +57,8 @@ const gulpIf = require("gulp-if");
 const gulpConcat = require("gulp-concat");
 const gulpCheerio = require("gulp-cheerio");
 const rep = require("gulp-replace-image-src-from-data-attr");
-
+const gulpRev = require('gulp-rev');
+const gulpRevRewrite = require('gulp-rev-rewrite');
 const babel = require("gulp-babel");
 const fs = require("fs");
 
@@ -80,56 +82,64 @@ const fonts = () => {
 };
 
 const js = () => {
-    return src(path.src.js)
+    const addLibrary = function (file) {
+        return `${SOURCE_DIR}/js/${file}`;
+    };
+
+    return src([addLibrary("swiper-bundle.min.js"), path.src.js])
+        .pipe(gulpIf("main.js", gulpFileInclude()))
+        .pipe(gulpIf("main.js", dest(path.build.js)))
         .pipe(
-            babel({
-                presets: ["@babel/env"],
-            })
+            gulpIf(
+                "main.js",
+                babel({
+                    presets: ["@babel/env"],
+                })
+            )
         )
-        .pipe(dest(path.build.js))
-        .pipe(gulpUglify())
-        .pipe(
-            gulpRename({
-                extname: ".min.js",
-            })
-        )
+        .pipe(gulpIf("main.js", gulpUglify()))
+        .pipe(gulpConcat("main.min.js"))
         .pipe(dest(path.build.js))
         .pipe(browserSync.stream());
 };
 
 const css = () => {
-    return src(path.src.css)
-        .pipe(gulpSourcemaps.init())
-        .pipe(
-            gulpSass({
-                outputStyle: "expanded",
-            })
-        )
-        .pipe(
-            gulpAutoprefixer({
-                cascade: true,
-                overrideBrowserslist: ["defaults"],
-            })
-        )
-        .pipe(gulpResolveUrl())
-        .pipe(media())
-        .pipe(gulpSourcemaps.write())
-        .pipe(dest(path.build.css))
-        .pipe(gulpCleanCss())
-        .pipe(
-            gulpRename({
-                extname: ".min.css",
-            })
-        )
-        .pipe(dest(path.build.css))
-        .pipe(browserSync.stream());
+    return (
+        src(path.src.css, { sourcemaps: false })
+            .pipe(gulpSourcemaps.init())
+            .pipe(
+                gulpSass({
+                    outputStyle: "expanded",
+                })
+            )
+            .pipe(
+                gulpAutoprefixer({
+                    cascade: true,
+                    overrideBrowserslist: ["defaults"],
+                })
+            )
+            .pipe(gulpResolveUrl())
+            .pipe(media())
+            .pipe(gulpSourcemaps.write())
+            .pipe(dest(path.build.css))
+            .pipe(gulpCleanCss())
+            .pipe(
+                gulpRename({
+                    extname: ".min.css",
+                })
+            )
+            .pipe(dest(path.build.css))
+            .pipe(browserSync.stream())
+    );
 };
 
 const img = () => {
     src(path.src.img, { since: lastRun(img) })
         .pipe(gulpWebp())
         .pipe(dest(path.build.img));
-    return src(path.src.img).pipe(gulpImagemin()).pipe(dest(path.build.img));
+    return src(path.src.img, { since: lastRun(img) })
+        .pipe(gulpImagemin())
+        .pipe(dest(path.build.img));
 };
 
 const browserSyncFn = () => {
@@ -158,6 +168,8 @@ const delFiles = () => {
 };
 
 const pngSprites = () => {
+
+    
     return src(`${SOURCE_DIR}/img/icons/*.png`)
         .pipe(
             spritesmith({
@@ -245,8 +257,8 @@ const fontRead = (done) => {
         Black: "900",
     };
 
-    function isTTF(string) {
-        return string.includes("ttf");
+    function notTTF(string) {
+        return !string.includes("ttf");
     }
 
     function isFontWeight(fontWeight) {
@@ -257,13 +269,13 @@ const fontRead = (done) => {
         let prevFont;
         fonts.forEach((font) => {
             const arr = font.split(".");
+            const fontArr = arr[0].split("-");
             const fontNameFull = arr[0];
             const fontExt = arr[1];
-            const fontArr = arr[0].split("-");
             const fontName = fontArr[0];
             const fontWeight = fontArr[1];
 
-            if (!isTTF(fontExt)) {
+            if (notTTF(fontExt)) {
                 if (prevFont !== fontNameFull) {
                     fs.appendFile(
                         SOURCE_DIR + "/scss/reuseables/fonts.scss",
@@ -272,7 +284,9 @@ const fontRead = (done) => {
                                 ? fontWeightMap[fontWeight]
                                 : fontWeight
                         }, "normal", "${fontNameFull}");\r\n`,
-                        function () {}
+                        function (err) {
+                            if (err) console.error(err);
+                        }
                     );
                 }
                 prevFont = fontNameFull;
@@ -296,3 +310,5 @@ exports.watch = watch;
 exports.svg = parallel(svgSprites, svgIcons);
 exports.png = pngSprites;
 exports.fony = fontRead;
+exports.js = js;
+exports.html = html
