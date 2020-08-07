@@ -17,7 +17,11 @@ const path = {
             ttf: SOURCE_DIR + "/fonts/*.ttf",
             woff: SOURCE_DIR + "/fonts/*.{woff,woff2}",
         },
-        img: SOURCE_DIR + "/img/**/*.{jpg,jpeg,png,svg,gif,webp,ico}",
+        img: [
+            SOURCE_DIR + "/img/**/*.{jpg,jpeg,png,svg,gif,webp,ico}",
+            `!${SOURCE_DIR}/img/icons/**`,
+            `!${SOURCE_DIR}/img/*.svg`,
+        ],
     },
     watch: {
         html: SOURCE_DIR + "/**/*.html",
@@ -51,6 +55,7 @@ const gulpResolveUrl = require("gulp-resolve-url");
 const gulpIf = require("gulp-if");
 const gulpConcat = require("gulp-concat");
 const gulpCheerio = require("gulp-cheerio");
+const rep = require("gulp-replace-image-src-from-data-attr");
 
 const babel = require("gulp-babel");
 const fs = require("fs");
@@ -58,6 +63,7 @@ const fs = require("fs");
 const html = () => {
     return src(path.src.html)
         .pipe(gulpFileInclude())
+        .pipe(rep({ keepOrigin: false }))
         .pipe(dest(path.build.html))
         .pipe(browserSync.stream());
 };
@@ -215,7 +221,7 @@ const svgIcons = () => {
 };
 
 const svgSprites = () => {
-    return src(`${SOURCE_DIR}/img/**/*.svg`)
+    return src(`${SOURCE_DIR}/img/*.svg`)
         .pipe(
             gulpSvgSprite({
                 mode: {
@@ -230,29 +236,50 @@ const svgSprites = () => {
         .pipe(dest(`${SOURCE_DIR}/img/sprites`));
 };
 
-const fontRead = (cb) => {
-    const content = fs.readFileSync(SOURCE_DIR + "/scss/fonts.scss");
-    if (content) {
-        return fs.readdir(path.src.fonts.dir, function (err, items) {
-            if (items) {
-                let prevFont;
-                items.forEach((el) => {
-                    let currentFont = el.split(".");
-                    if (!currentFont[1].includes("ttf")) {
-                        if (prevFont !== currentFont[0]) {
-                            fs.appendFile(
-                                SOURCE_DIR + "/scss/fonts.scss",
-                                `@include add-fonts ("${currentFont[0]}", "400", "normal", "${currentFont}");\r\n`,
-                                function () {}
-                            );
-                        }
-                        prevFont = currentFont[0];
-                    }
-                });
-            }
-            cb();
-        });
+const fontRead = (done) => {
+    fontWeightMap = {
+        Light: "300",
+        Regular: "400",
+        Medium: "500",
+        Bold: "700",
+        Black: "900",
+    };
+
+    function isTTF(string) {
+        return string.includes("ttf");
     }
+
+    function isFontWeight(fontWeight) {
+        return fontWeightMap[fontWeight];
+    }
+    fs.readdir(path.src.fonts.dir, function (err, fonts) {
+        if (err) console.error(err);
+        let prevFont;
+        fonts.forEach((font) => {
+            const arr = font.split(".");
+            const fontNameFull = arr[0];
+            const fontExt = arr[1];
+            const fontArr = arr[0].split("-");
+            const fontName = fontArr[0];
+            const fontWeight = fontArr[1];
+
+            if (!isTTF(fontExt)) {
+                if (prevFont !== fontNameFull) {
+                    fs.appendFile(
+                        SOURCE_DIR + "/scss/reuseables/fonts.scss",
+                        `@include add-fonts ("${fontName}", ${
+                            isFontWeight(fontWeight)
+                                ? fontWeightMap[fontWeight]
+                                : fontWeight
+                        }, "normal", "${fontNameFull}");\r\n`,
+                        function () {}
+                    );
+                }
+                prevFont = fontNameFull;
+            }
+        });
+        done();
+    });
 };
 
 const init = series(fontsInit, fontRead, pngSprites, svgSprites, svgIcons);
@@ -266,5 +293,6 @@ const watch = parallel(liveWatch, browserSyncFn);
 exports.default = build;
 exports.init = init;
 exports.watch = watch;
-exports.svg = svgSprites;
+exports.svg = parallel(svgSprites, svgIcons);
 exports.png = pngSprites;
+exports.fony = fontRead;
